@@ -1,0 +1,121 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\views\\complaints\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\views\\complaints\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\resources\\sharedresource.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\resources\\sharedresource.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|c:\\users\\ashbel\\source\\repos\\complaintproj\\complaintproj\\controllers\\complaintscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91213693-61EE-4D78-A149-DCAC63DD6B0A}|ComplaintProj\\ComplaintProj.csproj|solutionrelative:complaintproj\\controllers\\complaintscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Program.cs",
+              "RelativeDocumentMoniker": "ComplaintProj\\Program.cs",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Program.cs",
+              "RelativeToolTip": "ComplaintProj\\Program.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T08:31:23.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "ComplaintProj\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "ComplaintProj\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-04T08:52:03.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SharedResource.resx",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Resources\\SharedResource.resx",
+              "RelativeDocumentMoniker": "ComplaintProj\\Resources\\SharedResource.resx",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Resources\\SharedResource.resx",
+              "RelativeToolTip": "ComplaintProj\\Resources\\SharedResource.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2026-06-04T09:07:30.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Views\\Complaints\\Create.cshtml",
+              "RelativeDocumentMoniker": "ComplaintProj\\Views\\Complaints\\Create.cshtml",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Views\\Complaints\\Create.cshtml",
+              "RelativeToolTip": "ComplaintProj\\Views\\Complaints\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-04T07:49:59.903Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ComplaintsController.cs",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Controllers\\ComplaintsController.cs",
+              "RelativeDocumentMoniker": "ComplaintProj\\Controllers\\ComplaintsController.cs",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Controllers\\ComplaintsController.cs",
+              "RelativeToolTip": "ComplaintProj\\Controllers\\ComplaintsController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAwwDEAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T07:32:47.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "ComplaintProj\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Ashbel\\source\\repos\\ComplaintProj\\ComplaintProj\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "ComplaintProj\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T05:47:24.438Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+﻿@model ComplaintProj.Models.ComplaintModel
+
+@{
+    ViewData["Title"] = "Submit Complaint";
+}
+@* <!--lang-->
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<ComplaintProj.SharedResource> SharedLocalizer
+<!--lang--> *@
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body p-4">
+          @*   <!--lang-->
+          <h2 class="text-center text-primary mb-5">@SharedLocalizer["FormTitle"]</h2> *@
+
+            <h2 class="text-center text-primary mb-5">
+                Patient Complaint Submission Form
+            </h2>
+            <form asp-action="Create" method="post">
+
+                <!-- Patient Information -->
+                <h5 class="text-primary mb-4">Patient Information</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                      @*   <!--lang-->
+                        <label asp-for="PatientName" class="form-label">@SharedLocalizer["PatientName"]</label> *@
+
+                        <label asp-for="PatientName" class="form-label fw-bold"></label>
+                        <input asp-for="PatientName" class="form-control" placeholder="Enter full name">
+                        <span asp-validation-for="PatientName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="PhoneNumber" class="form-label fw-bold"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="e.g., 05xxxxxxx">
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="DateOfBirth" class="form-label fw-bold"></label>
+                        <input asp-for="DateOfBirth" class="form-control">
+                        <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Job" class="form-label fw-bold"></label>
+                        <input asp-for="Job" class="form-control" placeholder="Current occupation">
+                        <span asp-validation-for="Job" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Nationality" class="form-label fw-bold"></label>
+                        <input asp-for="Nationality" class="form-control" placeholder="e.g., Saudi">
+                        <span asp-validation-for="Nationality" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Email" class="form-label fw-bold"></label>
+                        <input asp-for="Email" class="form-control" placeholder="example@mail.com">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Complaint Details -->
+                <h5 class="text-primary mb-4">Complaint Details</h5>
+
+                <!-- أزرار الـ Radio مجهزة بـ asp-for -->
+                <div class="mb-4">
+                    <label asp-for="ComplaintType" class="form-label d-block fw-bold"></label>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="ComplaintType" class="form-check-input" type="radio" value="Medical" id="typeMedical">
+                        <label class="form-check-label" for="typeMedical">Medical</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="ComplaintType" class="form-check-input" type="radio" value="Non-Medical" id="typeNonMedical">
+                        <label class="form-check-label" for="typeNonMedical">Non-Medical</label>
+                    </div>
+                    <span asp-validation-for="ComplaintType" class="text-danger d-block small"></span>
+                </div>
+
+                <!-- قائمة التصنيفات مجهزة بـ asp-for -->
+                <div class="mb-4">
+                    <label asp-for="ComplaintCategory" class="form-label fw-bold"></label>
+                    <select asp-for="ComplaintCategory" class="form-select">
+                        <option selected disabled value="">Select Category</option>
+                        <option value="Delay in Service">Delay in Service</option>
+                        <option value="Medical Error">Medical Error</option>
+                        <option value="Staff Behavior">Staff Behavior</option>
+                        <option value="Administrative Issue">Administrative Issue</option>
+                        <option value="Communication Problem">Communication Problem</option>
+                        <option value="Facilities & Equipment">Facilities & Equipment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="ComplaintCategory" class="text-danger small"></span>
+                </div>
+
+                <!-- قائمة المواقع مجهزة بـ asp-for -->
+                <div class="mb-4">
+                    <label asp-for="ComplaintLocation" class="form-label fw-bold"></label>
+                    <select asp-for="ComplaintLocation" class="form-select">
+                        <option selected disabled value="">Select Location</option>
+                        <option value="Emergency Department">Emergency Department</option>
+                        <option value="Outpatient Clinic">Outpatient Clinic</option>
+                        <option value="Inpatient Ward">Inpatient Ward</option>
+                        <option value="Laboratory">Laboratory</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                        <option value="Radiology Department">Radiology Department</option>
+                    </select>
+                    <span asp-validation-for="ComplaintLocation" class="text-danger small"></span>
+                </div>
+
+                <!-- حقل الملخص مجهز بـ asp-for -->
+                <div class="mb-4">
+                    <label asp-for="ComplaintSummary" class="form-label fw-bold"></label>
+                    <textarea asp-for="ComplaintSummary" class="form-control" rows="5" placeholder="Describe your complaint here..."></textarea>
+                    <span asp-validation-for="ComplaintSummary" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary px-4">
+                    Submit Complaint
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- تفعيل ميزة التحقق الفوري في المتصفح -->
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
