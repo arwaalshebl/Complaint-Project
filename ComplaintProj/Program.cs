@@ -55,8 +55,35 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
+    //create accounts
+    async Task CreateTestUserAsync(string email, string password, string role)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            var newUser = new IdentityUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
 
+            var result = await userManager.CreateAsync(newUser, password);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(newUser, role);
+                Console.WriteLine($"User {email} created with role {role}");
+            }
+        }
+    }
+
+    await CreateTestUserAsync("admin@gmail.com", "@Arwa123", "Admin");
+    await CreateTestUserAsync("provider@gmail.com", "@Arwa123", "HealthcareProvider");
+    await CreateTestUserAsync("services@gmail.com", "@Arwa123", "PatientServices");
 }
+
+
+
 
 
 // Configure the HTTP request pipeline.
@@ -79,7 +106,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Complaints}/{action=Create}/{id?}")
+    pattern: "{controller=Complaints}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
