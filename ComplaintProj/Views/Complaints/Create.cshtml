@@ -1,4 +1,4 @@
-﻿@model ComplaintProj.Models.ComplaintModel
+﻿@model ComplaintProj.ViewModel.ComplaintViewModel
 
 @{
     ViewData["Title"] = "Submit Complaint";
@@ -66,7 +66,7 @@
                 <!-- Complaint Details -->
                 <h5 class="text-primary mb-4">Complaint Details</h5>
 
-                <!-- أزرار الـ Radio مجهزة بـ asp-for -->
+                
                 <div class="mb-4">
                     <label asp-for="ComplaintType" class="form-label d-block fw-bold"></label>
                     <div class="form-check form-check-inline">
@@ -79,20 +79,61 @@
                     </div>
                     <span asp-validation-for="ComplaintType" class="text-danger d-block small"></span>
                 </div>
-
+@* 
+                befor checkbox
                 <div class="mb-4">
                     <label asp-for="ComplaintCategory" class="form-label fw-bold"></label>
                     <select asp-for="ComplaintCategory" class="form-select">
                         <option selected disabled value="">Select Category</option>
-                        <option value="Delay in Service">Delay in Service</option>
-                        <option value="Medical Error">Medical Error</option>
-                        <option value="Staff Behavior">Staff Behavior</option>
-                        <option value="Administrative Issue">Administrative Issue</option>
-                        <option value="Communication Problem">Communication Problem</option>
-                        <option value="Facilities & Equipment">Facilities & Equipment</option>
+                        <option value="Waiting Time">Waiting Time</option>
+                        <option value="Billing and Fees">Billing and Fees</option>
+                        <option value="Behavior and Attitude">Behavior and Attitude</option>
+                        <option value="Incorrect Diagnosis or Treatment">Incorrect Diagnosis or Treatmentoption</option>
+                            <option value="Medication Errors">Medication Errors</option>
+                            <option value="Communication">Communication</option>
                         <option value="Other">Other</option>
                     </select>
                     <span asp-validation-for="ComplaintCategory" class="text-danger small"></span>
+                </div> *@
+                <div class="mb-4">
+                    <label class="form-label d-block fw-bold">Complaint Category</label>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Waiting Time" id="catWaitingTime">
+                        <label class="form-check-label" for="catWaitingTime">Waiting Time</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Billing and Fees" id="catBilling">
+                        <label class="form-check-label" for="catBilling">Billing and Fees</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Behavior and Attitude" id="catBehavior">
+                        <label class="form-check-label" for="catBehavior">Behavior and Attitude</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Incorrect Diagnosis or Treatment" id="catDiagnosis">
+                        <label class="form-check-label" for="catDiagnosis">Incorrect Diagnosis or Treatment</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Medication Errors" id="catMedication">
+                        <label class="form-check-label" for="catMedication">Medication Errors</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Communication" id="catCommunication">
+                        <label class="form-check-label" for="catCommunication">Communication</label>
+                    </div>
+
+                    <div class="form-check form-check-inline mb-2">
+                        <input class="form-check-input" type="checkbox" name="ComplaintCategory" value="Other" id="catOther">
+                        <label class="form-check-label" for="catOther">Other</label>
+                    </div>
+
+                    <span asp-validation-for="ComplaintCategory" class="text-danger d-block small"></span>
                 </div>
 
                 <!-- قائمة المواقع مجهزة بـ asp-for -->
@@ -100,12 +141,10 @@
                     <label asp-for="ComplaintLocation" class="form-label fw-bold"></label>
                     <select asp-for="ComplaintLocation" class="form-select">
                         <option selected disabled value="">Select Location</option>
-                        <option value="Emergency Department">Emergency Department</option>
-                        <option value="Outpatient Clinic">Outpatient Clinic</option>
-                        <option value="Inpatient Ward">Inpatient Ward</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Radiology Department">Radiology Department</option>
+                            <option value="Dental Clinic">Dental Clinic</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Outpatient Clinics">Outpatient Clinics</option>
+                            <option value="Inpatient Department">Inpatient Department</option>
                     </select>
                     <span asp-validation-for="ComplaintLocation" class="text-danger small"></span>
                 </div>

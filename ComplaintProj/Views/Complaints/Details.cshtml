@@ -1,4 +1,4 @@
-﻿@model ComplaintProj.Models.ComplaintModel
+﻿@model ComplaintProj.ViewModel.ComplaintViewModel
 
 @{
     ViewData["Title"] = "View Complaint Details";
@@ -57,32 +57,84 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
+@*                 <div class="mb-4">
+                    befor checkbox
                     <label asp-for="ComplaintCategory" class="form-label fw-bold"></label>
+
                     <select asp-for="ComplaintCategory" class="form-select" disabled>
-                        <option selected disabled value="">Select Category</option>
-                        <option value="Delay in Service">Delay in Service</option>
-                        <option value="Medical Error">Medical Error</option>
-                        <option value="Staff Behavior">Staff Behavior</option>
-                        <option value="Administrative Issue">Administrative Issue</option>
-                        <option value="Communication Problem">Communication Problem</option>
-                        <option value="Facilities & Equipment">Facilities & Equipment</option>
+                        <option value="">Select Category</option>
+                        <option value="Waiting Time">Waiting Time</option>
+                        <option value="Billing and Fees">Billing and Fees</option>
+                        <option value="Behavior and Attitude">Behavior and Attitude</option>
+                        <option value="Incorrect Diagnosis or Treatment">Incorrect Diagnosis or Treatment</option>
+                        <option value="Medication Errors">Medication Errors</option>
+                        <option value="Communication">Communication</option>
                         <option value="Other">Other</option>
                     </select>
-                </div>
+                </div> *@
+                
 
+<div class="mb-4">
+    <label class="form-label d-block fw-bold">Complaint Category </label>
+    
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detWaitingTime" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Waiting Time") ? "checked" : "")>
+        <label class="form-check-label" for="detWaitingTime">Waiting Time</label>
+    </div>
+    
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detBilling" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Billing and Fees") ? "checked" : "")>
+        <label class="form-check-label" for="detBilling">Billing and Fees</label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detBehavior" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Behavior and Attitude") ? "checked" : "")>
+        <label class="form-check-label" for="detBehavior">Behavior and Attitude</label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detDiagnosis" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Incorrect Diagnosis or Treatment") ? "checked" : "")>
+        <label class="form-check-label" for="detDiagnosis">Incorrect Diagnosis or Treatment</label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detMedication" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Medication Errors") ? "checked" : "")>
+        <label class="form-check-label" for="detMedication">Medication Errors</label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detCommunication" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Communication") ? "checked" : "")>
+        <label class="form-check-label" for="detCommunication">Communication</label>
+    </div>
+
+    <div class="form-check form-check-inline mb-2">
+        <input class="form-check-input" type="checkbox" id="detOther" disabled 
+               @(Model.ComplaintCategory != null && Model.ComplaintCategory.Contains("Other") ? "checked" : "")>
+        <label class="form-check-label" for="detOther">Other</label>
+    </div>
+</div>
                 <div class="mb-4">
                     <label asp-for="ComplaintLocation" class="form-label fw-bold"></label>
+
                     <select asp-for="ComplaintLocation" class="form-select" disabled>
                         <option selected disabled value="">Select Location</option>
-                        <option value="Emergency Department">Emergency Department</option>
-                        <option value="Outpatient Clinic">Outpatient Clinic</option>
-                        <option value="Inpatient Ward">Inpatient Ward</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Radiology Department">Radiology Department</option>
+                        <option value="Dental Clinic">Dental Clinic</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Outpatient Clinics">Outpatient Clinics</option>
+                        <option value="Inpatient Department">Inpatient Department</option>
                     </select>
+
+                    <input type="hidden" asp-for="ComplaintLocation" />
+
+                    <span asp-validation-for="ComplaintLocation" class="text-danger small"></span>
                 </div>
+
 
                 <div class="mb-4">
                     <label asp-for="ComplaintSummary" class="form-label fw-bold"></label>
@@ -93,12 +145,10 @@
                     <label name="ComplaintAssignment" class="form-label fw-bold"> Complaint Assignment To:</label>
                     <select name="ComplaintAssignment" class="form-select">
                         <option selected disabled value="">Select</option>
-                        <option value="Emergency Department">Emergency Department</option>
-                        <option value="Outpatient Clinic">Outpatient Clinic</option>
-                        <option value="Inpatient Ward">Inpatient Ward</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Radiology Department">Radiology Department</option>
+                        <option value="Dental Clinic">Dental Clinic</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Outpatient Clinics">Outpatient Clinics</option>
+                        <option value="Inpatient Department">Inpatient Department</option>
                     </select>
                     <button type="submit" class="btn btn-primary px-4">
                         Assign Complaint

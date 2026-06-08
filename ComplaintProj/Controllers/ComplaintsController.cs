@@ -1,8 +1,9 @@
 ﻿using ComplaintProj.Data;
 using ComplaintProj.Models;
+using ComplaintProj.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using System;
 namespace ComplaintProj.Controllers;
 
@@ -26,38 +27,109 @@ public class ComplaintsController : Controller
         }
 
         return View(complaintsList);
-
     }
-    public IActionResult Details(int? id)
+
+    //
+    ////BEFOR VIEWMODEL FOR CHECK BOX
+    //public IActionResult Details(int? id)
+    //{
+
+        //    var complaint = _context.Complaints
+        //        .FirstOrDefault(x => x.Id == id);   
+
+
+        //    if (complaint == null) return NotFound();
+
+        //    return View(complaint);
+        //}
+
+        //AFTER VIEWMODEL FOR CHECK BOX
+        public IActionResult Details(int? id)
     {
 
         var complaint = _context.Complaints
-            .FirstOrDefault(x => x.Id == id);   
-            
+            .FirstOrDefault(x => x.Id == id);
+
 
         if (complaint == null) return NotFound();
+        var viewModel = new ComplaintViewModel
+        {
+            PatientName = complaint.PatientName,
+            PhoneNumber = complaint.PhoneNumber,
+            DateOfBirth = complaint.DateOfBirth,
+            Job = complaint.Job,
+            Nationality = complaint.Nationality,
+            Email = complaint.Email,
+            ComplaintType = complaint.ComplaintType,
+            ComplaintLocation = complaint.ComplaintLocation,
+            ComplaintSummary = complaint.ComplaintSummary,
 
-        return View(complaint);
+            // 💡 التحويل العكسي: تفكيك النص الطويل المفصول بفاصلة (,) وإعادته كقائمة لتفعيل الـ Checkboxes المقفلة
+            ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
+                                    ? complaint.ComplaintCategory.Split(',').ToList()
+                                    : new List<string>()
+        };
+
+        return View(viewModel);
     }
+
+
+    ////BEFOR VIEWMODEL FOR CHECK BOX
+    //public IActionResult Create()
+    //{
+    //    return View();
+    //}
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Create(ComplaintModel complaint)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        _context.Complaints.Add(complaint);
+    //        await _context.SaveChangesAsync();
+
+    //        return RedirectToAction("Index", "Complaints");
+    //    }
+
+    //    return View(complaint);
+    //}
+
+    //AFTER VIEWMODEL FOR CHECK BOX
     public IActionResult Create()
     {
-        return View();
+        return View(new ComplaintViewModel());
     }
-    // 2. رابط استقبال البيانات وحفظها (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ComplaintModel complaint)
+    public async Task<IActionResult> Create(ComplaintViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
+            var complaint = new ComplaintModel
+            {
+                PatientName = viewModel.PatientName,
+                PhoneNumber = viewModel.PhoneNumber,
+                DateOfBirth = viewModel.DateOfBirth,
+                Job = viewModel.Job,
+                Nationality = viewModel.Nationality,
+                Email = viewModel.Email,
+                ComplaintType = viewModel.ComplaintType,
+                ComplaintLocation = viewModel.ComplaintLocation,
+                ComplaintSummary = viewModel.ComplaintSummary,
+
+                // Convert it to string
+                ComplaintCategory = viewModel.ComplaintCategory != null && viewModel.ComplaintCategory.Any()
+                                        ? string.Join(",", viewModel.ComplaintCategory)
+                                        : null
+            };
             _context.Complaints.Add(complaint);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Complaints");
+            return RedirectToAction("Index");
         }
-
-        return View(complaint);
+        return View(viewModel);
     }
+
     public async Task<IActionResult> UpdateStatus(int id, string status)
     {
         var complaint = await _context.Complaints.FindAsync(id);
