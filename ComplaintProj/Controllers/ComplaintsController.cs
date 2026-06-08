@@ -15,7 +15,30 @@ public class ComplaintsController : Controller
     {
         _context = context;
     }
+    public IActionResult Index()
+    {
 
+        var complaintsList = _context.Complaints.ToList();
+
+        if (complaintsList == null)
+        {
+            return NotFound();
+        }
+
+        return View(complaintsList);
+
+    }
+    public IActionResult Details(int? id)
+    {
+
+        var complaint = _context.Complaints
+            .FirstOrDefault(x => x.Id == id);   
+            
+
+        if (complaint == null) return NotFound();
+
+        return View(complaint);
+    }
     public IActionResult Create()
     {
         return View();
@@ -30,22 +53,33 @@ public class ComplaintsController : Controller
             _context.Complaints.Add(complaint);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Complaints");
         }
 
         return View(complaint);
     }
-    ////lang
-    //public IActionResult ChangeLanguage(string culture)
+    public async Task<IActionResult> UpdateStatus(int id, string status)
+    {
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
 
-    //{
-    //    Response.Cookies.Append(
-    //        CookieRequestCultureProvider.DefaultCookieName,
-    //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
-    //        , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-    //        );
+        complaint.Status = status;
+        _context.Complaints.Update(complaint);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index", "Complaints");
 
-    //    string returnUrl = Request.Headers.Referer.ToString();
-    //    return Redirect(returnUrl);
-    //}
-}
+    }
+        ////lang
+        //public IActionResult ChangeLanguage(string culture)
+
+        //{
+        //    Response.Cookies.Append(
+        //        CookieRequestCultureProvider.DefaultCookieName,
+        //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
+        //        , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+        //        );
+
+        //    string returnUrl = Request.Headers.Referer.ToString();
+        //    return Redirect(returnUrl);
+        //}
+    }

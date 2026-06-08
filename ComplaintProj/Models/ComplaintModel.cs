@@ -51,7 +51,12 @@ namespace ComplaintProj.Models
         [StringLength(1000)]
         [Display(Name = "Complaint Summary")]
         public string? ComplaintSummary { get; set; }
+
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string Status { get; set; } = "New";
+
     }
-    }
+}
 
 
