@@ -5,16 +5,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 namespace ComplaintProj.Controllers;
 
 public class ComplaintsController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    
-    public ComplaintsController(AppDbContext context)
+
+    public ComplaintsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
+        _webHostEnvironment = webHostEnvironment;
     }
     public IActionResult Index()
     {
@@ -67,8 +70,11 @@ public class ComplaintsController : Controller
             // 💡 التحويل العكسي: تفكيك النص الطويل المفصول بفاصلة (,) وإعادته كقائمة لتفعيل الـ Checkboxes المقفلة
             ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
                                     ? complaint.ComplaintCategory.Split(',').ToList()
-                                    : new List<string>()
-        };
+                                    : new List<string>(),
+
+            AttachmentPath = complaint.AttachmentPath
+
+        };  
 
         return View(viewModel);
     }
@@ -105,6 +111,36 @@ public class ComplaintsController : Controller
     {
         if (ModelState.IsValid)
         {
+            //attachment
+            List<string> savedFileNames = new List<string>();
+
+            if (viewModel.Attachments != null && viewModel.Attachments.Any())
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                foreach (var file in viewModel.Attachments)
+                {
+                    if (file.Length > 0)
+                    {
+                        //create a new uniqu name
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        savedFileNames.Add(uniqueFileName);
+                    }
+                }
+            } 
+            //end
             var complaint = new ComplaintModel
             {
                 PatientName = viewModel.PatientName,
@@ -119,16 +155,21 @@ public class ComplaintsController : Controller
 
                 // Convert it to string
                 ComplaintCategory = viewModel.ComplaintCategory != null && viewModel.ComplaintCategory.Any()
-                                        ? string.Join(",", viewModel.ComplaintCategory)
-                                        : null
+                                    ? string.Join(",", viewModel.ComplaintCategory)
+                                    : null,
+
+                AttachmentPath = savedFileNames.Any() ? string.Join(",", savedFileNames) : null
             };
+
             _context.Complaints.Add(complaint);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
+
         return View(viewModel);
     }
+
 
     public async Task<IActionResult> UpdateStatus(int id, string status)
     {
@@ -141,6 +182,7 @@ public class ComplaintsController : Controller
         return RedirectToAction("Index", "Complaints");
 
     }
+
         ////lang
         //public IActionResult ChangeLanguage(string culture)
 

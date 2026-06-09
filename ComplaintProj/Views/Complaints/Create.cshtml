@@ -22,7 +22,7 @@
             <h2 class="text-center text-primary mb-5">
                 Patient Complaint Submission Form
             </h2>
-            <form asp-action="Create" method="post">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
 
                 <!-- Patient Information -->
                 <h5 class="text-primary mb-4">Patient Information</h5>
@@ -155,6 +155,16 @@
                     <textarea asp-for="ComplaintSummary" class="form-control" rows="5" placeholder="Describe your complaint here..."></textarea>
                     <span asp-validation-for="ComplaintSummary" class="text-danger small"></span>
                 </div>
+
+                <div class="mb-4">
+                    <label asp-for="Attachments" class="form-label fw-bold">Supporting Documents (Photos or Reports)</label>
+                    <!-- قمنا بتحديد الامتدادات المسموحة مثل الصور وملفات الـ PDF والـ Word -->
+                    <input asp-for="Attachments" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf,.docx,.doc" multiple />
+
+                    <span asp-validation-for="Attachments" class="text-danger small"></span>
+                    <div class="form-text small text-muted">Allowed formats: Photos (JPG, PNG) or Reports (PDF, Word).</div>
+                </div>
+
 
                 <button type="submit" class="btn btn-primary px-4">
                     Submit Complaint

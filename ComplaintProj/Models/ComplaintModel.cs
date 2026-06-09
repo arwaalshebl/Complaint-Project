@@ -56,6 +56,8 @@ namespace ComplaintProj.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Status { get; set; } = "New";
 
+        public string? AttachmentPath { get; set; }
+
     }
 }
 

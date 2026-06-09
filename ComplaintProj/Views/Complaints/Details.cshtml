@@ -140,6 +140,23 @@
                     <label asp-for="ComplaintSummary" class="form-label fw-bold"></label>
                     <textarea asp-for="ComplaintSummary" class="form-control" rows="5" readonly></textarea>
                 </div>
+                <!-- attachemnt -->
+                @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+                {
+                    <div class="mb-4">
+                        <label class="form-label d-block fw-bold">Attached Documents</label>
+                        @foreach (var fileName in Model.AttachmentPath.Split(','))
+                        {
+                            var displayName = fileName.Length > 37 ? fileName.Substring(37) : fileName;
+
+                            <a href="~/uploads/@fileName" target="_blank" class="btn btn-outline-primary btn-sm me-2 mb-2">
+                                📄 View Document (@displayName)
+                            </a>
+                        }
+                    </div>
+                }
+
+
                 <div class="mb-4">
                     <!--assign -->
                     <label name="ComplaintAssignment" class="form-label fw-bold"> Complaint Assignment To:</label>

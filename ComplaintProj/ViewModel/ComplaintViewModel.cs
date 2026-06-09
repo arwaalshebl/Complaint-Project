@@ -50,5 +50,10 @@ namespace ComplaintProj.ViewModel
         [StringLength(1000)]
         [Display(Name = "Complaint Summary")]
         public string? ComplaintSummary { get; set; }
+
+
+        [Display(Name = "Supporting Documents")]
+        public List<IFormFile>? Attachments { get; set; }
+        public string? AttachmentPath { get; set; }
     }
 }
