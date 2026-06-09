@@ -1,4 +1,7 @@
-﻿@model ComplaintProj.ViewModel.ComplaintViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ComplaintProj.ViewModel.ComplaintViewModel
 
 @{
     ViewData["Title"] = "View Complaint Details";
@@ -156,32 +159,85 @@
                     </div>
                 }
 
+               
 
-                <div class="mb-4">
-                    <!--assign -->
-                    <label name="ComplaintAssignment" class="form-label fw-bold"> Complaint Assignment To:</label>
-                    <select name="ComplaintAssignment" class="form-select">
-                        <option selected disabled value="">Select</option>
-                        <option value="Dental Clinic">Dental Clinic</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Outpatient Clinics">Outpatient Clinics</option>
-                        <option value="Inpatient Department">Inpatient Department</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary px-4">
-                        Assign Complaint
-                    </button>
-                </div>
-                <div class="mb-4">
-                    <!--replay-->
-                    <label name=" Response" class="form-label fw-bold"></label>
-                    <textarea name=" Response" class="form-control" rows="5" placeholder=" "Write the
-                              response here..."></textarea>
-                </div>
-                <a asp-action="Index" class="btn btn-secondary px-4">
-                    Back to List
-                </a>
             </form>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("Admin") || User.IsInRole("PatientServices"))
+                {
+                    <!--assign-->
+                    <form asp-controller="Complaints" asp-action="Assign" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
+                        <input type="hidden" asp-for="Id" />
 
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Complaint Assignment To (Department):</label>
+                            <select name="ComplaintAssignment" class="form-select">
+                                <option selected disabled value="">Select Department</option>
+                                <option value="Dental Clinic">Dental Clinic</option>
+                                <option value="Surgery">Surgery</option>
+                                <option value="Outpatient Clinics">Outpatient Clinics</option>
+                                <option value="Inpatient Department">Inpatient Department</option>
+                            </select>
+                        </div>
+
+            
+                        <div class="mb-3">
+                            <label asp-for="AssignedStaffId" class="form-label fw-bold">Select Healthcare Staff</label>
+
+                            <select asp-for="AssignedStaffId" asp-items="Model.HealthcareStaffList" class="form-select" required>
+                                <option value="">-- Choose Staff Member from Identity Users --</option>
+                            </select>
+
+                            <span asp-validation-for="AssignedStaffId" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="card my-3">
+                            <div class="card-header bg-dark text-white fw-bold">Assignment Information</div>
+                            <div class="card-body">
+                                <p><strong>Current Status:</strong> <span class="badge bg-success">@Model.Status</span></p>
+                                <p><strong>Assigned Staff Name:</strong> @Model.AssignedStaffName</p>
+
+                            </div>
+                        </div>
+
+                
+
+                        <button type="submit" class="btn btn-primary px-4">
+                            Assign Complaint
+                        </button>
+                    </form>
+                }
+                else if (User.IsInRole("HealthcareProvider"))
+                {
+
+                    @*                   <!--this after put in model -->
+         <form asp-action="ReplyAndReturn" method="post" class="mb-4 p-3 border rounded bg-light">
+                            <input type="hidden" name="id" value="@Model.Id" />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Reply to Complaint:</label>
+                                <!-- تم إصلاح الخطأ الإملائي هنا وربط الاسم بالـ Controller -->
+                                <textarea name="staffReply" class="form-control" rows="5" placeholder="Write the response here..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-success px-4">
+                                Send Reply Back to Employee
+                            </button>
+                        </form> *@
+                    <div class="mb-4">
+                        <!--replay-->
+                        <label name=" Response" class="form-label fw-bold">Replay to Complaint:  </label>
+                        <textarea name=" Response" class="form-control" rows="5" placeholder=" " Write the
+                                  response here..."></textarea>
+                    </div>
+                }
+            }
+
+            <a asp-action="Index" class="btn btn-secondary px-4">
+                Back to List
+            </a>
         </div>
     </div>
 </div>

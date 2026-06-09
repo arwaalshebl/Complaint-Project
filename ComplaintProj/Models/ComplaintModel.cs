@@ -58,6 +58,10 @@ namespace ComplaintProj.Models
 
         public string? AttachmentPath { get; set; }
 
+        public string? AssignedStaffId { get; set; }
+
+
+
     }
 }
 

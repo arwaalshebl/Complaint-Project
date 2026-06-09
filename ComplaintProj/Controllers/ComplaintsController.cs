@@ -1,23 +1,30 @@
 ﻿using ComplaintProj.Data;
+using ComplaintProj.Migrations;
 using ComplaintProj.Models;
 using ComplaintProj.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+
 namespace ComplaintProj.Controllers;
 
 public class ComplaintsController : Controller
 {
     private readonly AppDbContext _context;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly UserManager<IdentityUser> _userManager;
 
-
-    public ComplaintsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+    public ComplaintsController(AppDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
     {
         _context = context;
         _webHostEnvironment = webHostEnvironment;
+        _userManager = userManager;
     }
     public IActionResult Index()
     {
@@ -37,17 +44,18 @@ public class ComplaintsController : Controller
     //public IActionResult Details(int? id)
     //{
 
-        //    var complaint = _context.Complaints
-        //        .FirstOrDefault(x => x.Id == id);   
+    //    var complaint = _context.Complaints
+    //        .FirstOrDefault(x => x.Id == id);   
 
 
-        //    if (complaint == null) return NotFound();
+    //    if (complaint == null) return NotFound();
 
-        //    return View(complaint);
-        //}
+    //    return View(complaint);
+    //}
 
-        //AFTER VIEWMODEL FOR CHECK BOX
-        public IActionResult Details(int? id)
+    //AFTER VIEWMODEL FOR CHECK BOX
+
+    public async Task<IActionResult> Details(int id)
     {
 
         var complaint = _context.Complaints
@@ -55,8 +63,26 @@ public class ComplaintsController : Controller
 
 
         if (complaint == null) return NotFound();
+        //get it from AspNetUsers
+        var staffList = await _userManager.Users
+            .Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = u.UserName
+            })
+            .ToListAsync();
+        string? staffName = "No staff assigned yet";
+        if (!string.IsNullOrEmpty(complaint.AssignedStaffId))
+        {
+            var assignedUser = await _userManager.FindByIdAsync(complaint.AssignedStaffId);
+            if (assignedUser != null)
+            {
+                staffName = assignedUser.UserName; 
+            }
+        }
         var viewModel = new ComplaintViewModel
         {
+            Id = complaint.Id,
             PatientName = complaint.PatientName,
             PhoneNumber = complaint.PhoneNumber,
             DateOfBirth = complaint.DateOfBirth,
@@ -66,13 +92,15 @@ public class ComplaintsController : Controller
             ComplaintType = complaint.ComplaintType,
             ComplaintLocation = complaint.ComplaintLocation,
             ComplaintSummary = complaint.ComplaintSummary,
-
-            // 💡 التحويل العكسي: تفكيك النص الطويل المفصول بفاصلة (,) وإعادته كقائمة لتفعيل الـ Checkboxes المقفلة
+            Status = complaint.Status,
+            // Convert it to string
             ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
                                     ? complaint.ComplaintCategory.Split(',').ToList()
                                     : new List<string>(),
 
-            AttachmentPath = complaint.AttachmentPath
+            AttachmentPath = complaint.AttachmentPath,
+            AssignedStaffName = staffName,
+            HealthcareStaffList = staffList
 
         };  
 
@@ -143,6 +171,7 @@ public class ComplaintsController : Controller
             //end
             var complaint = new ComplaintModel
             {
+                Id = viewModel.Id,
                 PatientName = viewModel.PatientName,
                 PhoneNumber = viewModel.PhoneNumber,
                 DateOfBirth = viewModel.DateOfBirth,
@@ -152,6 +181,7 @@ public class ComplaintsController : Controller
                 ComplaintType = viewModel.ComplaintType,
                 ComplaintLocation = viewModel.ComplaintLocation,
                 ComplaintSummary = viewModel.ComplaintSummary,
+                Status= viewModel.Status,
 
                 // Convert it to string
                 ComplaintCategory = viewModel.ComplaintCategory != null && viewModel.ComplaintCategory.Any()
@@ -183,17 +213,84 @@ public class ComplaintsController : Controller
 
     }
 
-        ////lang
-        //public IActionResult ChangeLanguage(string culture)
+    ////lang
+    //public IActionResult ChangeLanguage(string culture)
 
-        //{
-        //    Response.Cookies.Append(
-        //        CookieRequestCultureProvider.DefaultCookieName,
-        //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
-        //        , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-        //        );
+    //{
+    //    Response.Cookies.Append(
+    //        CookieRequestCultureProvider.DefaultCookieName,
+    //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
+    //        , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+    //        );
 
-        //    string returnUrl = Request.Headers.Referer.ToString();
-        //    return Redirect(returnUrl);
-        //}
+    //    string returnUrl = Request.Headers.Referer.ToString();
+    //    return Redirect(returnUrl);
+    //}
+
+    [HttpGet]
+    public async Task<IActionResult> Assign(int id)
+    {
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        //get it from AspNetUsers
+        var staffList = await _userManager.Users
+            .Select(u => new SelectListItem
+            {
+                Value = u.Id,       
+                Text = u.UserName  
+            })
+            .ToListAsync();
+
+        var viewModel = new ComplaintViewModel
+        {
+            Id=complaint.Id,
+            PatientName = complaint.PatientName,
+            PhoneNumber = complaint.PhoneNumber,
+            DateOfBirth = complaint.DateOfBirth,
+            Job = complaint.Job,
+            Nationality = complaint.Nationality,
+            Email = complaint.Email,
+            ComplaintType = complaint.ComplaintType,
+            ComplaintLocation = complaint.ComplaintLocation,
+            ComplaintSummary = complaint.ComplaintSummary,
+            Status = complaint.Status,
+            // Convert it to string
+            ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
+                                    ? complaint.ComplaintCategory.Split(',').ToList()
+                                    : new List<string>(),
+
+            //attach
+            AttachmentPath = complaint.AttachmentPath,
+            //assign
+            AssignedStaffId = complaint.AssignedStaffId,
+            HealthcareStaffList = staffList 
+        };
+
+        return View(viewModel);
     }
+
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,PatientServices")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Assign(int id, string assignedStaffId)
+    {
+            var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        //Id to the selcted staff
+        complaint.AssignedStaffId = assignedStaffId; ;
+        complaint.Status = "In Progress";
+
+
+        _context.Complaints.Update(complaint);
+        await _context.SaveChangesAsync();
+
+        // return RedirectToAction("Index");
+        return RedirectToAction("Details", new { id = id });
+
+
+    }
+
+}

@@ -36,6 +36,7 @@
                         <th class="border-0 py-3">Type of Complaint</th>
                         <th class="border-0 py-3">Reason</th>
                         <th class="border-0 py-3">Status</th> <!--colorfull-->
+                        <th>Assigned To</th>
                         <th class="border-0 py-3">Details</th>
                     
                     </tr>
@@ -96,6 +97,7 @@
                                                 </a>
                                             </li>
                                             <li>
+                                                <!--when assigned will change-->
                                                 <a class="dropdown-item" asp-action="UpdateStatus" asp-route-id="@item.Id" asp-route-status="In Progress">
                                                     <span class="badge bg-danger-subtle text-danger rounded-pill">In Progress</span>
                                                 </a>
@@ -112,7 +114,17 @@
 
          
                             </td>
-
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.AssignedStaffId))
+                                {
+                                
+                                    <span class="badge bg-info text-dark">👤 Assigned</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Not Assigned Yet</span>
+                                }
+                            </td>
                            <td>
        
                                 <div class="d-flex align-items-center">

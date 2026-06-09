@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,7 @@ namespace ComplaintProj.ViewModel
 {
     public class ComplaintViewModel
     {
+        public int Id { get; set; }
         // Patient Information
         [Required(ErrorMessage = "Patient name is required")]
         [Display(Name = "Patient Name")]
@@ -55,5 +57,14 @@ namespace ComplaintProj.ViewModel
         [Display(Name = "Supporting Documents")]
         public List<IFormFile>? Attachments { get; set; }
         public string? AttachmentPath { get; set; }
+
+        public string? AssignedStaffId { get; set; }
+        //only in viewmodel
+        public string? AssignedStaffName { get; set; }
+
+        public List<SelectListItem>? HealthcareStaffList { get; set; }
+
+        public string Status { get; set; } = "New";
+
     }
 }

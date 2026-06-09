@@ -61,6 +61,10 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\1a406707-93b6-4ef9-b821-5e130ad02cb7_html.png
+wwwroot\uploads\95803f70-9b15-4626-bc8f-b86b58007387_track learning.docx
+wwwroot\uploads\a392de7a-e243-40fc-8b49-d388cd050e98_track learning.pdf
+wwwroot\uploads\de6de8fe-2bcf-435b-b836-a0d77a50c85b_html.png
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\lib\jquery\LICENSE.txt
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\lib\jquery\dist\jquery.slim.min.map
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\lib\jquery\dist\jquery.slim.min.js
