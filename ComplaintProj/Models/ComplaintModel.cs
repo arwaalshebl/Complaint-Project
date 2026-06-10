@@ -60,7 +60,9 @@ namespace ComplaintProj.Models
 
         public string? AssignedStaffId { get; set; }
 
+        public string? StaffReply { get; set; }
 
+        public string? IsSatisfied { get; set; }
 
     }
 }

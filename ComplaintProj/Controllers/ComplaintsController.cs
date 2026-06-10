@@ -100,7 +100,8 @@ public class ComplaintsController : Controller
 
             AttachmentPath = complaint.AttachmentPath,
             AssignedStaffName = staffName,
-            HealthcareStaffList = staffList
+            HealthcareStaffList = staffList,
+            StaffReply = complaint.StaffReply
 
         };  
 
@@ -281,7 +282,7 @@ public class ComplaintsController : Controller
 
         //Id to the selcted staff
         complaint.AssignedStaffId = assignedStaffId; ;
-        complaint.Status = "In Progress";
+        complaint.Status = "In Progress,Assigned";
 
 
         _context.Complaints.Update(complaint);
@@ -292,5 +293,46 @@ public class ComplaintsController : Controller
 
 
     }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,HealthcareProvider")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Reply(int id, string staffReply)
+    {
+        if (string.IsNullOrWhiteSpace(staffReply))
+        {
+            ModelState.AddModelError("", "الرجاء كتابة الرد أولاً.");
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        complaint.StaffReply = staffReply;
+        complaint.Status = "In Progress,Replied";// updated but not show the replay
+
+
+
+        _context.Complaints.Update(complaint);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Details", new { id = id });
+    }
+    public IActionResult Delete(int id)
+    {
+        var complaint = _context.Complaints
+            
+            .FirstOrDefault(p => p.Id == id);
+        if (complaint == null) return NotFound();
+
+
+        _context.Complaints.Remove(complaint);
+        _context.SaveChanges();
+        return RedirectToAction("Index");
+
+
+    }
+
+
 
 }

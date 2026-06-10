@@ -62,9 +62,13 @@ namespace ComplaintProj.ViewModel
         //only in viewmodel
         public string? AssignedStaffName { get; set; }
 
+
         public List<SelectListItem>? HealthcareStaffList { get; set; }
 
         public string Status { get; set; } = "New";
 
+        public string? StaffReply { get; set; }
+
+        public string? IsSatisfied { get; set; }
     }
 }

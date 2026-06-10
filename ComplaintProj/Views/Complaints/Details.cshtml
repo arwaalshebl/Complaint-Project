@@ -209,31 +209,46 @@
                         </button>
                     </form>
                 }
+
                 else if (User.IsInRole("HealthcareProvider"))
-                {
+                { 
+                    <!--replay -->
+                    @if (Model.Status == "In Progress,Assigned")
+                    {
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white fw-bold">🩺 Healthcare Staff Action: Write Reply</div>
+                            <div class="card-body">
+                                <form asp-controller="Complaints" asp-action="Reply" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
+                                    <input type="hidden" asp-for="Id" />
 
-                    @*                   <!--this after put in model -->
-         <form asp-action="ReplyAndReturn" method="post" class="mb-4 p-3 border rounded bg-light">
-                            <input type="hidden" name="id" value="@Model.Id" />
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Your Medical/Technical Reply</label>
+                                        <textarea name="staffReply" class="form-control" rows="4" placeholder="Type your reply or feedback here..." required></textarea>
+                                    </div>
 
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Reply to Complaint:</label>
-                                <!-- تم إصلاح الخطأ الإملائي هنا وربط الاسم بالـ Controller -->
-                                <textarea name="staffReply" class="form-control" rows="5" placeholder="Write the response here..." required></textarea>
+                                    <button type="submit" class="btn btn-primary">Send Reply Back to Employee</button> <!--here is the problem-->
+                                </form>
                             </div>
+                        </div>
+                    }
 
-                            <button type="submit" class="btn btn-success px-4">
-                                Send Reply Back to Employee
-                            </button>
-                        </form> *@
-                    <div class="mb-4">
-                        <!--replay-->
-                        <label name=" Response" class="form-label fw-bold">Replay to Complaint:  </label>
-                        <textarea name=" Response" class="form-control" rows="5" placeholder=" " Write the
-                                  response here..."></textarea>
+                }
+                <!--sent replay -->
+                @if (Model.Status == "In Progress,Replied" || !string.IsNullOrEmpty(Model.StaffReply))
+                {
+                    <div class="card border-success mb-4">
+                        <div class="card-header bg-success text-white fw-bold">✅ Medical Staff Response Received</div>
+                        <div class="card-body">
+                            <hr />
+                            <p class="mb-0"><strong>Staff Reply:</strong></p>
+                            <div class="p-3 bg-light rounded border">
+                                @Model.StaffReply
+                            </div>
+                        </div>
                     </div>
                 }
             }
+
 
             <a asp-action="Index" class="btn btn-secondary px-4">
                 Back to List

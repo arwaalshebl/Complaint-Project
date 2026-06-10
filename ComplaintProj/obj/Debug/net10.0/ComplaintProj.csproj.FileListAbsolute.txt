@@ -7,7 +7,6 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\Compl
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\ComplaintProj.runtimeconfig.json
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\ComplaintProj.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\ComplaintProj.pdb
-C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\ar\ComplaintProj.resources.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\Azure.Identity.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\Humanizer.dll
@@ -251,9 +250,6 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\runti
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.csproj.AssemblyReference.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.Resources.SharedResource.resources
-C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.Resources.SharedResource.ar.resources
-C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.csproj.GenerateResource.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.AssemblyInfoInputs.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.AssemblyInfo.cs
@@ -263,7 +259,6 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\Compl
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.RazorAssemblyInfo.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.RazorAssemblyInfo.cs
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.sourcelink.json
-C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ar\ComplaintProj.resources.dll
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json

@@ -33,7 +33,7 @@ namespace CourseraF.Controllers
 
                     TempData["ShowNotificationRequest"] = true;
 
-                    return RedirectToAction("Create", "Complaints");
+                    return RedirectToAction("Index", "Complaints");
                 }
 
                 ModelState.AddModelError(string.Empty, "محاولة دخول غير صحيحة.");
