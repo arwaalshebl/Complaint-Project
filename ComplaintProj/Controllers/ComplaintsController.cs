@@ -5,6 +5,7 @@ using ComplaintProj.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,17 +27,49 @@ public class ComplaintsController : Controller
         _webHostEnvironment = webHostEnvironment;
         _userManager = userManager;
     }
-    public IActionResult Index()
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult>  Index()
     {
+        //GET USER INFO 
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+        var userEmail = User.Identity?.Name;
 
-        var complaintsList = _context.Complaints.ToList();
-
-        if (complaintsList == null)
+        // Using AsQueryable() delays database execution so filters run efficiently on the SQL server rather than loading the entire table into RAM like ToList().
+        var complaintsQuery = _context.Complaints.AsQueryable();
+        if (User.IsInRole("Patient"))
         {
-            return NotFound();
+            complaintsQuery = complaintsQuery.Where(c => c.Email == userEmail);
+        }
+        else if (User.IsInRole("HealthcareProvider"))
+        {
+
+
+            complaintsQuery = complaintsQuery.Where(c => c.AssignedStaffId == userId);
         }
 
-        return View(complaintsList);
+        var filteredComplaints = await complaintsQuery
+             .OrderByDescending(c => c.Status == "Reopened,Unresolved") // الشكاوى الحمراء المستعجلة أولاً
+             .ThenByDescending(c => c.CreatedAt) // ثم الأحدث تاريخاً
+             .ToListAsync();
+
+        var viewModelList = filteredComplaints.Select(complaint => new ComplaintViewModel
+        {
+            Id = complaint.Id,
+            PatientName = complaint.PatientName,
+            CreatedAt = complaint.CreatedAt,
+            ComplaintType = complaint.ComplaintType,
+            ComplaintLocation = complaint.ComplaintLocation,
+            ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
+                                    ? complaint.ComplaintCategory.Split(',').ToList()
+                                    : new List<string>(),
+            Status = complaint.Status,
+            IsSatisfied = complaint.IsSatisfied,
+            AssignedStaffId = complaint.AssignedStaffId
+        }).ToList();
+
+        return View(viewModelList);
+
     }
 
     //
@@ -302,7 +335,7 @@ public class ComplaintsController : Controller
     {
         if (string.IsNullOrWhiteSpace(staffReply))
         {
-            ModelState.AddModelError("", "الرجاء كتابة الرد أولاً.");
+            ModelState.AddModelError("", "write reply ");
             return RedirectToAction("Details", new { id = id });
         }
 
@@ -310,7 +343,7 @@ public class ComplaintsController : Controller
         if (complaint == null) return NotFound();
 
         complaint.StaffReply = staffReply;
-        complaint.Status = "In Progress,Replied";// updated but not show the replay
+        complaint.Status = "In Progress,Replied";
 
 
 

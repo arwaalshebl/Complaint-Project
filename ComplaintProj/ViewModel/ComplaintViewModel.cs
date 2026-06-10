@@ -13,6 +13,9 @@ namespace ComplaintProj.ViewModel
         [Display(Name = "Patient Name")]
         public string? PatientName { get; set; }
 
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+
         [Required(ErrorMessage = "Phone number is required")]
         [Phone]
         [Display(Name = "Phone Number")]
