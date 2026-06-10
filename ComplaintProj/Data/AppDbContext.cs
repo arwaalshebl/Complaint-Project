@@ -12,5 +12,6 @@ namespace ComplaintProj.Data
 
 
         public DbSet<ComplaintModel> Complaints { get; set; }
+        public DbSet<AuditLogModel> AuditLogs { get; set; }
     }
 }

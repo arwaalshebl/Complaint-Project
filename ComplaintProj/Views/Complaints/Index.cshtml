@@ -144,11 +144,12 @@
 
                             </td>
                             <td class="text-center">
-                                <a 
-                                   class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                    <i class="bi bi-trash3 me-1"></i> Delete
-                                </a>
-
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this complaint?');" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                        <i class="bi bi-trash3 me-1"></i> Delete
+                                    </button>
+                                </form>
                             </td>
 
                         </tr>

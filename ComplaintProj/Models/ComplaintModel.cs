@@ -54,6 +54,9 @@ namespace ComplaintProj.Models
 
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; } = false; // Soft Delet
+
         public string Status { get; set; } = "New";
 
         public string? AttachmentPath { get; set; }

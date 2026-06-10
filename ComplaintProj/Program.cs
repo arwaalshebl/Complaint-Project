@@ -1,9 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-
-using ComplaintProj.Data;
 using ComplaintProj;
+using ComplaintProj.Data;
+using ComplaintProj.Interceptors;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,19 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+
+//interceptor
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AuditInterceptor>();
+
+builder.Services.AddDbContext<AppDbContext>((sp, options) =>
+{
+    var interceptor = sp.GetRequiredService<AuditInterceptor>();
+
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .AddInterceptors(interceptor);
+});
 
 ////lang
 //builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

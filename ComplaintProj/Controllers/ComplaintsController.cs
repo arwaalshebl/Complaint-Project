@@ -319,6 +319,10 @@ public class ComplaintsController : Controller
 
         return RedirectToAction("Details", new { id = id });
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+
     public IActionResult Delete(int id)
     {
         var complaint = _context.Complaints
