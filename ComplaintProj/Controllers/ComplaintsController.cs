@@ -101,7 +101,8 @@ public class ComplaintsController : Controller
             AttachmentPath = complaint.AttachmentPath,
             AssignedStaffName = staffName,
             HealthcareStaffList = staffList,
-            StaffReply = complaint.StaffReply
+            StaffReply = complaint.StaffReply,
+            IsSatisfied=complaint.IsSatisfied
 
         };  
 
@@ -333,6 +334,32 @@ public class ComplaintsController : Controller
 
     }
 
+    [HttpPost]
+    [Authorize(Roles = "Admin,Patient")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SubmitFeedback(int id, string satisfaction)
+    {
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        complaint.IsSatisfied = satisfaction;
+
+        if (satisfaction == "Satisfied")
+        {
+            complaint.Status = "Closed";
+        }
+        else if (satisfaction == "Not Satisfied")
+        {
+            complaint.Status = "Reopened,Unresolved";
+
+          
+        }
+
+        _context.Complaints.Update(complaint);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Details", new { id = id });
+    }
 
 
 }

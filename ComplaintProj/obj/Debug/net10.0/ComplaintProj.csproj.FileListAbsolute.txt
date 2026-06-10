@@ -403,3 +403,8 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\refin
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.pdb
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.genruntimeconfig.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ref\ComplaintProj.dll
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\ar\ComplaintProj.resources.dll
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.Resources.SharedResource.resources
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.Resources.SharedResource.ar.resources
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.csproj.GenerateResource.cache
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ar\ComplaintProj.resources.dll
