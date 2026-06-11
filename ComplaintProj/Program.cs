@@ -4,6 +4,7 @@ using ComplaintProj.Interceptors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ComplaintProj.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,10 @@ builder.Services.AddDbContext<AppDbContext>((sp, options) =>
 //    .SetDefaultCulture("en-US")
 //    .AddSupportedCultures(supportedCultures)
 //    .AddSupportedUICultures(supportedCultures);
+
+//Signal R
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
 
@@ -114,6 +119,8 @@ app.UseRouting();
 //idintity
 app.UseAuthentication();
 app.UseAuthorization();
+//signal R
+app.MapHub<ComplaintHub>("/complaintHub").RequireAuthorization();
 
 app.MapStaticAssets();
 

@@ -73,6 +73,27 @@
             </div>
         </nav>
     </header>
+    <!--toast PatientServicesGroup -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <div id="ReceiveComplaintToast" class="toast hide rounded-4 shadow border-0" role="alert" aria-live="assertive" aria-atomic="true">
+
+            <div class="toast-header bg-success text-white rounded-top-4 border-0 py-2">
+                <i class="bi bi-check-lg me-2"></i>
+                <strong class="me-auto">New Complaint</strong>
+                <small id="toastTime"></small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+
+            <div class="toast-body text-center p-4">
+                <h5 class="fw-bold text-dark"> Done! </h5>
+                <p class="text-muted mb-0" id="toastMessage">
+                    Notification text goes here. layout
+                </p>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -88,6 +109,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    
+    <script src="~/js/complaintNotification.js" asp-append-version="true"></script>
+   
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,5 +1,8 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\js\complaintNotification.js
+wwwroot\js\signalr\dist\browser\signalr.js
+wwwroot\js\signalr\dist\browser\signalr.min.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -127,3 +130,6 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\lib\bootstrap\d
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\js\site.js
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\favicon.ico
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\css\site.css
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\js\complaintNotification.js
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\js\signalr\dist\browser\signalr.js
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\wwwroot\js\signalr\dist\browser\signalr.min.js

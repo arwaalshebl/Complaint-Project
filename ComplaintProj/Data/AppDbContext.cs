@@ -13,5 +13,12 @@ namespace ComplaintProj.Data
 
         public DbSet<ComplaintModel> Complaints { get; set; }
         public DbSet<AuditLogModel> AuditLogs { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ComplaintModel>()
+                        .HasQueryFilter(c => !c.IsDeleted);
+        }
     }
 }

@@ -408,3 +408,7 @@ C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\Compl
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.Resources.SharedResource.ar.resources
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ComplaintProj.csproj.GenerateResource.cache
 C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\ar\ComplaintProj.resources.dll
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\bin\Debug\net10.0\libman.json
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\compressed\qibjh1gdwp-{0}-v27kyt3qt0-v27kyt3qt0.gz
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\compressed\nvw4dqq258-{0}-c1cgutxotd-c1cgutxotd.gz
+C:\Users\Ashbel\source\repos\ComplaintProj\ComplaintProj\obj\Debug\net10.0\compressed\vkejh1u5ym-{0}-wh8sqiu0ql-wh8sqiu0ql.gz

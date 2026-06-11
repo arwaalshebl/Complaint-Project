@@ -213,20 +213,18 @@
                 else if (User.IsInRole("HealthcareProvider"))
                 { 
                     <!--replay -->
-                    @if (Model.Status == "In Progress,Assigned")
+                    @if (Model.Status == "In Progress,Assigned" || Model.Status == "Reopened,Unresolved")
                     {
                         <div class="card border-primary mb-4">
                             <div class="card-header bg-primary text-white fw-bold">🩺 Healthcare Staff Action: Write Reply</div>
                             <div class="card-body">
                                 <form asp-controller="Complaints" asp-action="Reply" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
-                                    <input type="hidden" asp-for="Id" />
-
+                                    @Html.AntiForgeryToken()
                                     <div class="mb-3">
                                         <label class="form-label fw-bold">Your Medical/Technical Reply</label>
                                         <textarea name="staffReply" class="form-control" rows="4" placeholder="Type your reply or feedback here..." required></textarea>
                                     </div>
-
-                                    <button type="submit" class="btn btn-primary">Send Reply Back to Employee</button> <!--here is the problem-->
+                                    <button type="submit" class="btn btn-primary">Send Reply Back to Patient</button>
                                 </form>
                             </div>
                         </div>
@@ -249,60 +247,79 @@
                 }
             }
             <!-- feedback -->
-            @if (User.IsInRole("Patient") && Model.Status == "In Progress,Replied" && string.IsNullOrEmpty(Model.IsSatisfied))
+            @if (User.IsInRole("Patient") && Model.Status == "In Progress,Replied")
             {
-                <div class="card border-warning mb-4 shadow-sm">
-                    <div class="card-header bg-warning text-dark fw-bold">📝 Patient Satisfaction Feedback</div>
-                    <div class="card-body">
-                        <form asp-controller="Complaints" asp-action="SubmitFeedback" asp-route-id="@Model.Id" method="post">
+                if (string.IsNullOrEmpty(Model.IsSatisfied) || Model.IsSatisfied == "Not Satisfied")
+                {
+                    <div class="card border-warning mb-4 shadow-sm">
+                        <div class="card-header bg-warning text-dark fw-bold">📝 Patient Satisfaction Feedback</div>
+                        <div class="card-body">
+                            <form asp-controller="Complaints" asp-action="SubmitFeedback" asp-route-id="@Model.Id" method="post">
                             @Html.AntiForgeryToken()
 
-                            <div class="mb-4">
-                                <label class="form-label fw-bold d-block fs-5">Are you satisfied with the resolution of your complaint?</label>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold d-block fs-5">Are you satisfied with the new resolution of your complaint?</label>
 
-                                <div class="form-check form-check-inline me-4 mt-2">
-                                    <input class="form-check-input" type="radio" name="satisfaction" id="satisfiedRadio" value="Satisfied" required>
-                                    <label class="form-check-label text-success fw-bold fs-6" for="satisfiedRadio">
-                                        <i class="bi bi-emoji-smile-fill"></i> Satisfied
-                                    </label>
+                                    <div class="form-check form-check-inline me-4 mt-2">
+                                        <input class="form-check-input" type="radio" name="satisfaction" id="satisfiedRadio" value="Satisfied" required>
+                                        <label class="form-check-label text-success fw-bold fs-6" for="satisfiedRadio">
+                                            <i class="bi bi-emoji-smile-fill"></i> Satisfied
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input class="form-check-input" type="radio" name="satisfaction" id="notSatisfiedRadio" value="Not Satisfied" required>
+                                        <label class="form-check-label text-danger fw-bold fs-6" for="notSatisfiedRadio">
+                                            <i class="bi bi-emoji-frown-fill"></i> Not Satisfied
+                                        </label>
+                                    </div>
                                 </div>
 
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" name="satisfaction" id="notSatisfiedRadio" value="Not Satisfied" required>
-                                    <label class="form-check-label text-danger fw-bold fs-6" for="notSatisfiedRadio">
-                                        <i class="bi bi-emoji-frown-fill"></i> Not Satisfied
-                                    </label>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-dark fw-bold px-4 rounded-pill">Submit Feedback</button>
-                        </form>
+                                <button type="submit" class="btn btn-dark fw-bold px-4 rounded-pill">Submit Feedback</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                }
             }
+
 
             <!--send feedback -->
             @if (!string.IsNullOrEmpty(Model.IsSatisfied))
             {
                 <div class="card border-info mb-4 shadow-sm">
-                    <div class="card-header bg-info text-dark fw-bold">📊 Patient Feedback Result</div>
+                    <div class="card-header bg-info text-dark fw-bold">📊 Patient Feedback Status</div>
                     <div class="card-body py-3">
-                        <span class="fw-bold me-2">Patient Satisfaction Status:</span>
-                        @if (Model.IsSatisfied == "Satisfied")
+
+                        @if (Model.Status == "In Progress,Replied" && Model.IsSatisfied == "Not Satisfied")
                         {
+                            <div class="alert alert-warning d-flex align-items-center mb-0" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                                <div>
+                                    <strong>Previous Feedback:</strong> You were <u>Not Satisfied</u>.
+                                    <span class="badge bg-primary ms-2 animate-pulse">New Staff Reply Added</span>
+                                    <br><small class="text-muted">Please review the medical staff response below and submit your updated feedback.</small>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.IsSatisfied == "Satisfied")
+                        {
+                            <span class="fw-bold me-2">Current Status:</span>
                             <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">
-                                <i class="bi bi-check-circle-fill"></i> Satisfied
+                                <i class="bi bi-check-circle-fill"></i> Case Closed & Satisfied
                             </span>
                         }
-                        else
+                        else if (Model.Status == "Reopened,Unresolved" && Model.IsSatisfied == "Not Satisfied")
                         {
+                            <span class="fw-bold me-2">Current Status:</span>
                             <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill">
-                                <i class="bi bi-x-circle-fill"></i> Not Satisfied
+                                <i class="bi bi-exclamation-octagon-fill"></i> Reopened (Waiting for Healthcare Provider Reply)
                             </span>
                         }
+
                     </div>
                 </div>
             }
+
 
 
             <a asp-action="Index" class="btn btn-secondary px-4">

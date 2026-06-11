@@ -1,31 +1,40 @@
-﻿using ComplaintProj.Data;
+﻿using Azure.Core;
+using ComplaintProj.Data;
+using ComplaintProj.Hubs;
 using ComplaintProj.Migrations;
 using ComplaintProj.Models;
 using ComplaintProj.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.Security.Claims;
 
 namespace ComplaintProj.Controllers;
 
 public class ComplaintsController : Controller
 {
     private readonly AppDbContext _context;
+    //files
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IHubContext<ComplaintHub> _hubContext;
 
-    public ComplaintsController(AppDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
+    public ComplaintsController(AppDbContext context,
+        IWebHostEnvironment webHostEnvironment,
+        UserManager<IdentityUser> userManager,
+        IHubContext<ComplaintHub> hubContext)
     {
         _context = context;
         _webHostEnvironment = webHostEnvironment;
         _userManager = userManager;
+        _hubContext = hubContext;
     }
     [HttpGet]
     [Authorize]
@@ -49,8 +58,8 @@ public class ComplaintsController : Controller
         }
 
         var filteredComplaints = await complaintsQuery
-             .OrderByDescending(c => c.Status == "Reopened,Unresolved") // الشكاوى الحمراء المستعجلة أولاً
-             .ThenByDescending(c => c.CreatedAt) // ثم الأحدث تاريخاً
+             .OrderByDescending(c => c.Status == "Reopened,Unresolved") 
+             .ThenByDescending(c => c.CreatedAt) 
              .ToListAsync();
 
         var viewModelList = filteredComplaints.Select(complaint => new ComplaintViewModel
@@ -229,6 +238,10 @@ public class ComplaintsController : Controller
             _context.Complaints.Add(complaint);
             await _context.SaveChangesAsync();
 
+
+            await _hubContext.Clients.Group("PatientServicesGroup")
+                .SendAsync("ReceiveComplaintToast", "NewComplaint", $"New Complaint Submitted! ID: #{complaint.Id}");
+
             return RedirectToAction("Index");
         }
 
@@ -315,12 +328,15 @@ public class ComplaintsController : Controller
         if (complaint == null) return NotFound();
 
         //Id to the selcted staff
-        complaint.AssignedStaffId = assignedStaffId; ;
+        complaint.AssignedStaffId = assignedStaffId; 
         complaint.Status = "In Progress,Assigned";
 
 
         _context.Complaints.Update(complaint);
         await _context.SaveChangesAsync();
+
+        await _hubContext.Clients.Group("HealthcareProviderGroup")
+                .SendAsync("ReceiveComplaintToast", "ComplaintAssigned", $"New Complaint Assigned to you! ID: #{complaint.Id}");
 
         // return RedirectToAction("Index");
         return RedirectToAction("Details", new { id = id });
@@ -347,8 +363,21 @@ public class ComplaintsController : Controller
 
 
 
+
         _context.Complaints.Update(complaint);
         await _context.SaveChangesAsync();
+
+
+        //to patient
+        var user = await _userManager.FindByEmailAsync(complaint.Email);
+        if (user != null)
+        {
+            await _hubContext.Clients.User(user.Id).SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Your c has been replied! ID: #{complaint.Id}");
+        }
+            //to PatientServices
+            await _hubContext.Clients.Group("PatientServicesGroup")
+                .SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Complaint ID: #{complaint.Id} replied by {complaint.AssignedStaffId}");
+
 
         return RedirectToAction("Details", new { id = id });
     }
@@ -388,8 +417,11 @@ public class ComplaintsController : Controller
         else if (satisfaction == "Not Satisfied")
         {
             complaint.Status = "Reopened,Unresolved";
+            var targetGroups = new List<string> { "PatientServicesGroup", "HealthcareProviderGroup" };
 
-          
+            await _hubContext.Clients.Groups(targetGroups)
+                .SendAsync("ReceiveComplaintToast", "ComplaintReopened", $"Complaint #{id} has been Reopened");
+
         }
 
         _context.Complaints.Update(complaint);
