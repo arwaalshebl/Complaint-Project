@@ -71,6 +71,7 @@ namespace ComplaintProj.ViewModel
         public string Status { get; set; } = "New";
 
         public string? StaffReply { get; set; }
+        public List<string> AllRepliesList { get; set; } = new List<string>();
 
         public string? IsSatisfied { get; set; }
     }

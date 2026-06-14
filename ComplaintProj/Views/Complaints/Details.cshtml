@@ -164,56 +164,156 @@
             </form>
             @if (SignInManager.IsSignedIn(User))
             {
+                <!--assign-->
+                @if (User.IsInRole("Admin") || User.IsInRole("PatientServices"))
+                {
+                    <!-- قسم التعيين (Assign) لموظفي خدمة المرضى والإدارة -->
+                    @if (Model.Status == "New" || Model.Status == "Reopened,Unresolved")
+                    {
+                        <form asp-controller="Complaints" asp-action="Assign" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Complaint Assignment To (Department):</label>
+                                <select name="ComplaintAssignment" class="form-select">
+                                    <option selected disabled value="">Select Department</option>
+                                    <option value="Dental Clinic">Dental Clinic</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Outpatient Clinics">Outpatient Clinics</option>
+                                    <option value="Inpatient Department">Inpatient Department</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="AssignedStaffId" class="form-label fw-bold">Select Healthcare Staff</label>
+                                <select asp-for="AssignedStaffId" asp-items="Model.HealthcareStaffList" class="form-select" required>
+                                    <option value="">-- Choose Staff Member from Identity Users --</option>
+                                </select>
+                                <span asp-validation-for="AssignedStaffId" class="text-danger"></span>
+                            </div>
+
+                            <div class="card my-3">
+                                <div class="card-header bg-dark text-white fw-bold">Assignment Information</div>
+                                <div class="card-body">
+                                    <p><strong>Current Status:</strong> <span class="badge bg-success">@Model.Status</span></p>
+                                    <p><strong>Assigned Staff Name:</strong> @Model.AssignedStaffName</p>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary px-4">
+                                Assign Complaint
+                            </button>
+                        </form>
+                    }
+                }
+                else if (User.IsInRole("HealthcareProvider"))
+                {
+                    @if (Model.Status == "In Progress,Assigned" )
+                    {
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white fw-bold">🩺 Healthcare Staff Action: Write Reply</div>
+                            <div class="card-body">
+                                <form asp-controller="Complaints" asp-action="Reply" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
+                                    @Html.AntiForgeryToken()
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Your Medical/Technical Reply</label>
+                                        <textarea name="staffReply" class="form-control" rows="4" placeholder="Type your dynamic update or new reply here..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Send Reply Back to Patient</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @if (!string.IsNullOrEmpty(Model.StaffReply))
+                {
+                    <div class="card border-success mb-4">
+                        <div class="card-header bg-success text-white fw-bold">✅ Medical Staff Response Received</div>
+                        <div class="card-body">
+                            <hr />
+                            <p class="mb-2"><strong>Staff Reply History (سجل الردود السابقة):</strong></p>
+
+                            <div class="replies-history-container" style="max-height: 350px; overflow-y: auto;">
+                                @if (Model.AllRepliesList != null && Model.AllRepliesList.Any())
+                                {
+                                    @foreach (var replyItem in Model.AllRepliesList)
+                                    {
+                                        <div class="p-3 mb-2 bg-light rounded border shadow-sm">
+                                            <p class="mb-0 text-dark" style="white-space: pre-line;">@replyItem</p>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="p-3 bg-light rounded border">
+                                        <p class="mb-0" style="white-space: pre-line;">@Model.StaffReply</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+@*             @if (SignInManager.IsSignedIn(User))
+            {
                 @if (User.IsInRole("Admin") || User.IsInRole("PatientServices"))
                 {
                     <!--assign-->
-                    <form asp-controller="Complaints" asp-action="Assign" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
-                        <input type="hidden" asp-for="Id" />
+                    @if (Model.Status == "New" || Model.Status == "Reopened,Unresolved")
+                    {
+                        <form asp-controller="Complaints" asp-action="Assign" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
+                            <input type="hidden" asp-for="Id" />
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Complaint Assignment To (Department):</label>
-                            <select name="ComplaintAssignment" class="form-select">
-                                <option selected disabled value="">Select Department</option>
-                                <option value="Dental Clinic">Dental Clinic</option>
-                                <option value="Surgery">Surgery</option>
-                                <option value="Outpatient Clinics">Outpatient Clinics</option>
-                                <option value="Inpatient Department">Inpatient Department</option>
-                            </select>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Complaint Assignment To (Department):</label>
+                                <select name="ComplaintAssignment" class="form-select">
+                                    <option selected disabled value="">Select Department</option>
+                                    <option value="Dental Clinic">Dental Clinic</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Outpatient Clinics">Outpatient Clinics</option>
+                                    <option value="Inpatient Department">Inpatient Department</option>
+                                </select>
+                            </div>
 
             
-                        <div class="mb-3">
-                            <label asp-for="AssignedStaffId" class="form-label fw-bold">Select Healthcare Staff</label>
+                            <div class="mb-3">
+                                <label asp-for="AssignedStaffId" class="form-label fw-bold">Select Healthcare Staff</label>
 
-                            <select asp-for="AssignedStaffId" asp-items="Model.HealthcareStaffList" class="form-select" required>
-                                <option value="">-- Choose Staff Member from Identity Users --</option>
-                            </select>
+                                <select asp-for="AssignedStaffId" asp-items="Model.HealthcareStaffList" class="form-select" required>
+                                    <option value="">-- Choose Staff Member from Identity Users --</option>
+                                </select>
 
-                            <span asp-validation-for="AssignedStaffId" class="text-danger"></span>
-                        </div>
-
-
-                        <div class="card my-3">
-                            <div class="card-header bg-dark text-white fw-bold">Assignment Information</div>
-                            <div class="card-body">
-                                <p><strong>Current Status:</strong> <span class="badge bg-success">@Model.Status</span></p>
-                                <p><strong>Assigned Staff Name:</strong> @Model.AssignedStaffName</p>
-
+                                <span asp-validation-for="AssignedStaffId" class="text-danger"></span>
                             </div>
-                        </div>
+
+
+                            <div class="card my-3">
+                                <div class="card-header bg-dark text-white fw-bold">Assignment Information</div>
+                                <div class="card-body">
+                                    <p><strong>Current Status:</strong> <span class="badge bg-success">@Model.Status</span></p>
+                                    <p><strong>Assigned Staff Name:</strong> @Model.AssignedStaffName</p>
+
+                                </div>
+                            </div>
 
                 
 
-                        <button type="submit" class="btn btn-primary px-4">
-                            Assign Complaint
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-primary px-4">
+                                Assign Complaint
+                            </button>
+                        </form>
+                        
+                    }
+
                 }
 
                 else if (User.IsInRole("HealthcareProvider"))
                 { 
                     <!--replay -->
-                    @if (Model.Status == "In Progress,Assigned" || Model.Status == "Reopened,Unresolved")
+                    @if (Model.Status == "In Progress,Assigned" )
                     {
                         <div class="card border-primary mb-4">
                             <div class="card-header bg-primary text-white fw-bold">🩺 Healthcare Staff Action: Write Reply</div>
@@ -238,14 +338,31 @@
                         <div class="card-header bg-success text-white fw-bold">✅ Medical Staff Response Received</div>
                         <div class="card-body">
                             <hr />
-                            <p class="mb-0"><strong>Staff Reply:</strong></p>
-                            <div class="p-3 bg-light rounded border">
-                                @Model.StaffReply
+                            <p class="mb-2"><strong>Staff Reply History :</strong></p>
+
+                            <div class="replies-history-container" style="max-height: 350px; overflow-y: auto;">
+                                @if (Model.AllRepliesList != null && Model.AllRepliesList.Any())
+                                {
+                                    @foreach (var replyItem in Model.AllRepliesList)
+                                    {
+                                        <div class="p-3 mb-2 bg-light rounded border shadow-sm">
+                                            <!-- white-space: pre-line تحافظ على السطور الجديدة عند الضغط على Enter -->
+                                            <p class="mb-0 text-dark" style="white-space: pre-line;">@replyItem</p>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="p-3 bg-light rounded border">
+                                        <p class="mb-0" style="white-space: pre-line;">@Model.StaffReply</p>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
                 }
-            }
+
+            } *@
             <!-- feedback -->
             @if (User.IsInRole("Patient") && Model.Status == "In Progress,Replied")
             {
@@ -312,7 +429,7 @@
                         {
                             <span class="fw-bold me-2">Current Status:</span>
                             <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill">
-                                <i class="bi bi-exclamation-octagon-fill"></i> Reopened (Waiting for Healthcare Provider Reply)
+                                <i class="bi bi-exclamation-octagon-fill"></i> Reopened 
                             </span>
                         }
 

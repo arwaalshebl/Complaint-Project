@@ -144,7 +144,10 @@ public class ComplaintsController : Controller
             AssignedStaffName = staffName,
             HealthcareStaffList = staffList,
             StaffReply = complaint.StaffReply,
-            IsSatisfied=complaint.IsSatisfied
+            AllRepliesList = !string.IsNullOrEmpty(complaint.StaffReply)
+            ? complaint.StaffReply.Split(new[] { "|||" }, StringSplitOptions.RemoveEmptyEntries).ToList()
+            : new List<string>(),
+            IsSatisfied =complaint.IsSatisfied
 
         };  
 
@@ -358,7 +361,19 @@ public class ComplaintsController : Controller
         var complaint = await _context.Complaints.FindAsync(id);
         if (complaint == null) return NotFound();
 
-        complaint.StaffReply = staffReply;
+        string currentStaffName = User.Identity?.Name ?? "Healthcare Staff";
+        string timestamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm tt");
+        string formattedReply = $"[{currentStaffName} - {timestamp}]:\n{staffReply}";
+        
+
+        if (string.IsNullOrEmpty(complaint.StaffReply))
+        {
+            complaint.StaffReply = formattedReply;
+        }
+        else
+        {
+            complaint.StaffReply = complaint.StaffReply + "|||" + formattedReply;
+        }
         complaint.Status = "In Progress,Replied";
 
 
@@ -417,9 +432,11 @@ public class ComplaintsController : Controller
         else if (satisfaction == "Not Satisfied")
         {
             complaint.Status = "Reopened,Unresolved";
-            var targetGroups = new List<string> { "PatientServicesGroup", "HealthcareProviderGroup" };
 
-            await _hubContext.Clients.Groups(targetGroups)
+
+           // var targetGroups = new List<string> { "PatientServicesGroup", "HealthcareProviderGroup" };
+
+            await _hubContext.Clients.Groups("PatientServicesGroup")
                 .SendAsync("ReceiveComplaintToast", "ComplaintReopened", $"Complaint #{id} has been Reopened");
 
         }

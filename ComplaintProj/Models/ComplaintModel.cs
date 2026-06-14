@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComplaintProj.Models
 {
@@ -64,6 +65,18 @@ namespace ComplaintProj.Models
         public string? AssignedStaffId { get; set; }
 
         public string? StaffReply { get; set; }
+
+        [NotMapped]
+        public List<string> AllRepliesList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(StaffReply))
+                    return new List<string>();
+
+                return StaffReply.Split(new[] { "|||" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
+        }
 
         public string? IsSatisfied { get; set; }
 
