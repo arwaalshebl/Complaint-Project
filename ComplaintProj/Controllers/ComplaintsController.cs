@@ -447,5 +447,48 @@ public class ComplaintsController : Controller
         return RedirectToAction("Details", new { id = id });
     }
 
+   
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Report(int id)
+    {
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        string? staffName = "No staff assigned yet";
+        if (!string.IsNullOrEmpty(complaint.AssignedStaffId))
+        {
+            var assignedUser = await _userManager.FindByIdAsync(complaint.AssignedStaffId);
+            if (assignedUser != null)
+            {
+                staffName = assignedUser.UserName;
+            }
+        }
+
+        var viewModel = new ComplaintViewModel
+        {
+            Id = complaint.Id,
+            PatientName = complaint.PatientName,
+            PhoneNumber = complaint.PhoneNumber,
+            DateOfBirth = complaint.DateOfBirth,
+            Job = complaint.Job,
+            Nationality = complaint.Nationality,
+            Email = complaint.Email,
+            ComplaintType = complaint.ComplaintType,
+            ComplaintLocation = complaint.ComplaintLocation,
+            ComplaintSummary = complaint.ComplaintSummary,
+            Status = complaint.Status,
+            IsSatisfied = complaint.IsSatisfied,
+            AssignedStaffName = staffName,
+            CreatedAt = complaint.CreatedAt,
+
+            AllRepliesList = !string.IsNullOrEmpty(complaint.StaffReply)
+                ? complaint.StaffReply.Split(new[] { "|||" }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                : new List<string>()
+        };
+
+        return View(viewModel);
+    }
+
+
 
 }

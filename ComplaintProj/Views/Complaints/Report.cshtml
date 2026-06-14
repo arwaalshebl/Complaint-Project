@@ -1,0 +1,127 @@
+﻿@model ComplaintProj.ViewModel.ComplaintViewModel
+
+@{
+    Layout = "_Layout"; // يمكنك كتابة Layout = null إذا كنت تريد الصفحة بدون هيدر الموقع تماماً
+    ViewData["Title"] = "Complaint Official Report";
+}
+
+<style>
+    @@media print {
+        /*hide button in print*/
+        .no-print, nav, footer, .btn {
+            display: none !important;
+        }
+
+        body {
+            background-color: #fff;
+            color: #000;
+            font-size: 12pt;
+        }
+
+        .card {
+            border: 1px solid #000 !important;
+            box-shadow: none !important;
+        }
+
+        .card-header {
+            background-color: #f5f5f5 !important;
+            color: #000 !important;
+        }
+    }
+</style>
+
+<div class="container my-4 p-4 border rounded shadow bg-white">
+
+    <div class="row mb-4 no-print">
+        <div class="col text-end">
+            <button onclick="window.print();" class="btn btn-danger px-4 fw-bold">
+                🖨️ Print Report / Save as PDF
+            </button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary px-3">Back to Details</a>
+        </div>
+    </div>
+
+    <div class="row align-items-center border-bottom pb-3 mb-4">
+        <div class="col-md-6">
+            <h2 class="text-uppercase fw-bold text-dark">Healthcare Facility</h2>
+            <p class="text-muted mb-0">Patient Relations & Complaints Department</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <h4 class="fw-bold text-primary">OFFICIAL COMPLAINT REPORT</h4>
+            <p class="mb-0"><strong>Report Date:</strong> @DateTime.Now.ToString("yyyy-MM-dd hh:mm tt")</p>
+            <p class="mb-0"><strong>Complaint ID:</strong> #@Model.Id</p>
+        </div>
+    </div>
+
+    <div class="card mb-4 border-secondary">
+        <div class="card-header bg-dark text-white fw-bold">Section 1: Patient Information</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-sm-6"><strong>Patient Name:</strong> @Model.PatientName</div>
+                <div class="col-sm-6"><strong>Phone Number:</strong> @Model.PhoneNumber</div>
+                <div class="col-sm-6"><strong>Email Address:</strong> @Model.Email</div>
+                <div class="col-sm-6"><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("yyyy-MM-dd")</div>
+                <div class="col-sm-6"><strong>Nationality:</strong> @Model.Nationality</div>
+                <div class="col-sm-6"><strong>Occupation/Job:</strong> @Model.Job</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 border-secondary">
+        <div class="card-header bg-dark text-white fw-bold">Section 2: Complaint Details & Lifecycle</div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-sm-4"><strong>Type:</strong> <span class="badge bg-secondary text-dark">@Model.ComplaintType</span></div>
+                <div class="col-sm-4"><strong>Location:</strong> @Model.ComplaintLocation</div>
+                <div class="col-sm-4"><strong>Submission Date:</strong> @Model.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd hh:mm tt")</div>
+                <div class="col-sm-4"><strong>Current Status:</strong> <span class="badge bg-warning text-dark">@Model.Status</span></div>
+                <div class="col-sm-4"><strong>Assigned Staff:</strong> @Model.AssignedStaffName</div>
+                <div class="col-sm-4"><strong>Patient Satisfied:</strong> <span class="badge bg-info text-dark">@Model.IsSatisfied</span></div>
+            </div>
+            <hr />
+            <p class="fw-bold mb-1">Complaint Summary:</p>
+            <div class="p-3 bg-light rounded border" style="white-space: pre-line;">
+                @Model.ComplaintSummary
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 border-secondary">
+        <div class="card-header bg-dark text-white fw-bold">Section 3: Investigation Logs & Staff Replies</div>
+        <div class="card-body">
+            @if (Model.AllRepliesList != null && Model.AllRepliesList.Any())
+            {
+                int counter = 1;
+                @foreach (var replyItem in Model.AllRepliesList)
+                {
+                    <div class="p-3 mb-2 bg-light rounded border">
+                        <strong class="text-primary">Log #@counter</strong>
+                        <p class="mb-0 mt-1 text-dark" style="white-space: pre-line;">@replyItem</p>
+                    </div>
+                    counter++;
+                }
+            }
+            else
+            {
+                <p class="text-muted italic mb-0">No updates or medical responses have been logged for this complaint yet.</p>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-5 pt-4 border-top">
+        <div class="col text-center">
+            <p class="text-muted small">This is a system-generated official report. Any modifications render this document invalid.</p>
+        </div>
+    </div>
+    <div class="row mt-4 text-center">
+        <div class="col-md-6">
+            <p class="mb-5">________________________</p>
+            <h6>Investigating Staff Signature</h6>
+        </div>
+        <div class="col-md-6">
+            <p class="mb-5">________________________</p>
+            <h6>Department Head Approval</h6>
+        </div>
+    </div>
+
+</div>
