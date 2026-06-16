@@ -168,9 +168,6 @@
   <data name="SubcategoryofComplaint" xml:space="preserve">
     <value>Subcategory of Complaint</value>
   </data>
-  <data name="hg" xml:space="preserve">
-    <value>Waiting Time</value>
-  </data>
   <data name="BillingandFees" xml:space="preserve">
     <value>Billing and Fees</value>
   </data>
@@ -209,5 +206,17 @@
   </data>
   <data name="Other" xml:space="preserve">
     <value>Other</value>
+  </data>
+  <data name="Waiting Time" xml:space="preserve">
+    <value>Waiting Time</value>
+  </data>
+  <data name="SelectLocation" xml:space="preserve">
+    <value>Select Location</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Supporting Documents (Photos or Reports)</value>
+  </data>
+  <data name="Allowedformats" xml:space="preserve">
+    <value>Allowed formats</value>
   </data>
 </root>

@@ -168,9 +168,6 @@
   <data name="SubcategoryofComplaint" xml:space="preserve">
     <value>الفئة الفرعية للشكوى</value>
   </data>
-  <data name="hg" xml:space="preserve">
-    <value>وقت الإنتظار</value>
-  </data>
   <data name="BillingandFees" xml:space="preserve">
     <value>الفواتير والرسوم</value>
   </data>
@@ -209,5 +206,17 @@
   </data>
   <data name="Other" xml:space="preserve">
     <value>أخرى</value>
+  </data>
+  <data name="Waiting Time" xml:space="preserve">
+    <value>وقت الإنتظار</value>
+  </data>
+  <data name="SelectLocation" xml:space="preserve">
+    <value>اختيار الموقع</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>المستندات  (صور أو تقارير)</value>
+  </data>
+  <data name="Allowedformats" xml:space="preserve">
+    <value>التنسيقات المسموح بها: الصور (JPG، PNG) أو التقارير (PDF، Word)</value>
   </data>
 </root>
