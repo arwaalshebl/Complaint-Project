@@ -117,10 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FormTitle" xml:space="preserve">
-    <value>نموذج تقديم شكاوى المرضى</value>
+  <data name="ComplaintDate" xml:space="preserve">
+    <value>تاريخ الشكوى</value>
   </data>
   <data name="PatientName" xml:space="preserve">
     <value>اسم المريض</value>
+  </data>
+  <data name="FormTitle" xml:space="preserve">
+    <value>نموذج تقديم شكاوى المرضى</value>
+  </data>
+  <data name="Clinic" xml:space="preserve">
+    <value>العيادة</value>
+  </data>
+  <data name="TypeofComplaint" xml:space="preserve">
+    <value>نوع الشكوى</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>السبب</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>التفاصيل</value>
+  </data>
+  <data name="SubmitNewComplaint" xml:space="preserve">
+    <value>تقديم شكوى جديدة</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الجوال</value>
+  </data>
+  <data name="DateofBirth" xml:space="preserve">
+    <value>يوم الميلاد</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>الوظيفة</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>الجنسية</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>عنوان البريد الإلكتروني</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>طبي</value>
+  </data>
+  <data name="Non-Medical" xml:space="preserve">
+    <value>غير طبي</value>
+  </data>
+  <data name="SubcategoryofComplaint" xml:space="preserve">
+    <value>الفئة الفرعية للشكوى</value>
+  </data>
+  <data name="hg" xml:space="preserve">
+    <value>وقت الإنتظار</value>
+  </data>
+  <data name="BillingandFees" xml:space="preserve">
+    <value>الفواتير والرسوم</value>
+  </data>
+  <data name="BehaviorandAttitude" xml:space="preserve">
+    <value>تشخيص</value>
+  </data>
+  <data name="IncorrectDiagnosisorTreatment" xml:space="preserve">
+    <value>تشخيص او علاج غير صحيح</value>
+  </data>
+  <data name="MedicationErrors" xml:space="preserve">
+    <value>خطأ في الدواء</value>
+  </data>
+  <data name="Communication" xml:space="preserve">
+    <value>التواصل</value>
+  </data>
+  <data name="ComplaintLocation" xml:space="preserve">
+    <value>مكان الحدث</value>
+  </data>
+  <data name="DentalClinic" xml:space="preserve">
+    <value>عيادة الأسنان</value>
+  </data>
+  <data name="Surgery" xml:space="preserve">
+    <value>الجراحة</value>
+  </data>
+  <data name="OutpatientClinics" xml:space="preserve">
+    <value>العيادات الخارجية</value>
+  </data>
+  <data name="InpatientDepartment" xml:space="preserve">
+    <value>المرضى الداخليين</value>
+  </data>
+  <data name="ComplaintSummary" xml:space="preserve">
+    <value>ملخص الشكوى</value>
+  </data>
+  <data name="SubmitComplaint" xml:space="preserve">
+    <value>إرسال الشكوى</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>أخرى</value>
   </data>
 </root>

@@ -117,10 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FormTitle" xml:space="preserve">
-    <value>Patient Complaint Submission Form</value>
+  <data name="ComplaintDate" xml:space="preserve">
+    <value>Complaint Date</value>
   </data>
   <data name="PatientName" xml:space="preserve">
     <value>Patient Name</value>
+  </data>
+  <data name="FormTitle" xml:space="preserve">
+    <value>Patient Complaint Submission Form</value>
+  </data>
+  <data name="Clinic" xml:space="preserve">
+    <value>Clinic</value>
+  </data>
+  <data name="TypeofComplaint" xml:space="preserve">
+    <value>Type of Complaint</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="SubmitNewComplaint" xml:space="preserve">
+    <value>Submit New Complaint</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="DateofBirth" xml:space="preserve">
+    <value>Date of Birth</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>Job</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Medical</value>
+  </data>
+  <data name="Non-Medical" xml:space="preserve">
+    <value>Non-Medical</value>
+  </data>
+  <data name="SubcategoryofComplaint" xml:space="preserve">
+    <value>Subcategory of Complaint</value>
+  </data>
+  <data name="hg" xml:space="preserve">
+    <value>Waiting Time</value>
+  </data>
+  <data name="BillingandFees" xml:space="preserve">
+    <value>Billing and Fees</value>
+  </data>
+  <data name="BehaviorandAttitude" xml:space="preserve">
+    <value>Behavior and Attitude</value>
+  </data>
+  <data name="IncorrectDiagnosisorTreatment" xml:space="preserve">
+    <value>Incorrect Diagnosis or Treatment</value>
+  </data>
+  <data name="MedicationErrors" xml:space="preserve">
+    <value>Medication Errors</value>
+  </data>
+  <data name="Communication" xml:space="preserve">
+    <value>Communication</value>
+  </data>
+  <data name="ComplaintLocation" xml:space="preserve">
+    <value>Complaint Location</value>
+  </data>
+  <data name="DentalClinic" xml:space="preserve">
+    <value>Dental Clinic</value>
+  </data>
+  <data name="Surgery" xml:space="preserve">
+    <value>Surgery</value>
+  </data>
+  <data name="OutpatientClinics" xml:space="preserve">
+    <value>Outpatient Clinics</value>
+  </data>
+  <data name="InpatientDepartment" xml:space="preserve">
+    <value>Inpatient Department</value>
+  </data>
+  <data name="ComplaintSummary" xml:space="preserve">
+    <value>Complaint Summary</value>
+  </data>
+  <data name="SubmitComplaint" xml:space="preserve">
+    <value>Submit Complaint</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
   </data>
 </root>

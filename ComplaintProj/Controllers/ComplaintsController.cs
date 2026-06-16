@@ -264,19 +264,19 @@ public class ComplaintsController : Controller
 
     }
 
-    ////lang
-    //public IActionResult ChangeLanguage(string culture)
+    //lang
+    public IActionResult ChangeLanguage(string culture)
 
-    //{
-    //    Response.Cookies.Append(
-    //        CookieRequestCultureProvider.DefaultCookieName,
-    //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
-    //        , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-    //        );
+    {
+        Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture))
+            , new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
 
-    //    string returnUrl = Request.Headers.Referer.ToString();
-    //    return Redirect(returnUrl);
-    //}
+        string returnUrl = Request.Headers.Referer.ToString();
+        return Redirect(returnUrl);
+    }
 
     [HttpGet]
     public async Task<IActionResult> Assign(int id)

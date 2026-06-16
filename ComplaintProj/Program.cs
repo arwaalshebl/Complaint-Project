@@ -9,12 +9,13 @@ using ComplaintProj.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-                //.AddViewLocalization() //lang
-                // .AddDataAnnotationsLocalization(options => {
-                //             options.DataAnnotationLocalizerProvider = (type, factory) =>
-                //           factory.Create(typeof(SharedResource));
-                //         });
+builder.Services.AddControllersWithViews()
+                .AddViewLocalization() //lang
+                 .AddDataAnnotationsLocalization(options =>
+                 {
+                     options.DataAnnotationLocalizerProvider = (type, factory) =>
+                   factory.Create(typeof(SharedResource));
+                 });
 
 
 //Database
@@ -41,14 +42,14 @@ builder.Services.AddDbContext<AppDbContext>((sp, options) =>
            .AddInterceptors(interceptor);
 });
 
-////lang
-//builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-////lang
-//var supportedCultures = new[] { "en-US", "ar-SA" };
-//var localizationOptions = new RequestLocalizationOptions()
-//    .SetDefaultCulture("en-US")
-//    .AddSupportedCultures(supportedCultures)
-//    .AddSupportedUICultures(supportedCultures);
+//lang
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+//lang
+var supportedCultures = new[] { "en-US", "ar-SA" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en-US")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
 
 //Signal R
 builder.Services.AddSignalR();
@@ -111,8 +112,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-////lang
-//app.UseRequestLocalization(localizationOptions);
+//lang
+app.UseRequestLocalization(localizationOptions);
 
 app.UseHttpsRedirection();
 app.UseRouting();
