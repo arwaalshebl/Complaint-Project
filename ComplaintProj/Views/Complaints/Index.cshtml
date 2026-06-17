@@ -110,7 +110,7 @@
                                             <i class="bi bi-exclamation-triangle-fill me-1">Reopened,Unresolved</i>
                                         </span>
                                     }
-                                    else if (item.Status == "New" || string.IsNullOrEmpty(item.Status))
+                                     @if (item.Status == "New" || string.IsNullOrEmpty(item.Status))
                                     {
                                         <span class="badge bg-warning-subtle text-warning border border-warning px-3 py-2 rounded-pill fw-bold small">
                                             <i class="bi bi-star-fill me-1"></i> New
