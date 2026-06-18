@@ -167,7 +167,6 @@
                 <!--assign-->
                 @if (User.IsInRole("Admin") || User.IsInRole("PatientServices"))
                 {
-                    <!-- قسم التعيين (Assign) لموظفي خدمة المرضى والإدارة -->
                     @if (Model.Status == "New" || Model.Status == "Reopened,Unresolved")
                     {
                         <form asp-controller="Complaints" asp-action="Assign" asp-route-id="@Model.Id" method="post" class="mb-4 p-3 border rounded bg-light">
@@ -206,9 +205,15 @@
                             </button>
                         </form>
                     }
+
+
+
                 }
+               
+
                 else if (User.IsInRole("HealthcareProvider"))
                 {
+                    <!--REPLY-->
                     @if (Model.Status == "In Progress,Assigned" )
                     {
                         <div class="card border-primary mb-4">
@@ -253,8 +258,32 @@
                                 }
                             </div>
                         </div>
+                        <!--approve-->
+                        @if (User.IsInRole("Admin") || User.IsInRole("PatientServices"))
+                        {
+
+                            @if ( Model.Status == "In Progress,Replied")
+                            {
+                                <div class="card-footer bg-light border-top border-success-subtle p-3 d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle"></i> Review required before patient can view this response.
+                                    </small>
+
+                                    <form asp-action="Approve" method="post" class="m-0">
+                                        <input type="hidden" name="id" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-success px-4 py-2 fw-bold shadow-sm hover-elevate">
+                                            <i class="bi bi-check-circle-fill me-2"></i> Approve
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        }
                     </div>
+
+
                 }
+
+
             }
 
 @*             @if (SignInManager.IsSignedIn(User))
@@ -364,7 +393,7 @@
 
             } *@
             <!-- feedback -->
-            @if (User.IsInRole("Patient") && Model.Status == "In Progress,Replied")
+            @if (User.IsInRole("Patient") && Model.Status == "In Progress,Approve")
             {
                 if (string.IsNullOrEmpty(Model.IsSatisfied) || Model.IsSatisfied == "Not Satisfied")
                 {
@@ -407,7 +436,7 @@
                     <div class="card-header bg-info text-dark fw-bold">📊 Patient Feedback Status</div>
                     <div class="card-body py-3">
 
-                        @if (Model.Status == "In Progress,Replied" && Model.IsSatisfied == "Not Satisfied")
+                        @if (Model.Status == "In Progress,Approve" && Model.IsSatisfied == "Not Satisfied")
                         {
                             <div class="alert alert-warning d-flex align-items-center mb-0" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>

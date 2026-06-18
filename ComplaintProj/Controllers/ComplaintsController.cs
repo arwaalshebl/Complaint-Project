@@ -374,6 +374,7 @@ public class ComplaintsController : Controller
         {
             complaint.StaffReply = complaint.StaffReply + "|||" + formattedReply;
         }
+
         complaint.Status = "In Progress,Replied";
 
 
@@ -383,16 +384,40 @@ public class ComplaintsController : Controller
         await _context.SaveChangesAsync();
 
 
-        //to patient
+        ////to patient
+        //var user = await _userManager.FindByEmailAsync(complaint.Email);
+        //if (user != null)
+        //{
+        //    await _hubContext.Clients.User(user.Id).SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Your c has been replied! ID: #{complaint.Id}");
+        //}
+        //to PatientServices
+        await _hubContext.Clients.Group("PatientServicesGroup")
+                .SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Complaint ID: #{complaint.Id} replied by {complaint.AssignedStaffId}");
+
+
+        return RedirectToAction("Details", new { id = id });
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,PatientServices")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Approve(int id)
+    {
+        var complaint = await _context.Complaints.FindAsync(id);
+        if (complaint == null) return NotFound();
+
+        complaint.Status = "In Progress,Approve";
+
+        _context.Complaints.Update(complaint);
+        await _context.SaveChangesAsync();
+
+
+        //notifi patient
         var user = await _userManager.FindByEmailAsync(complaint.Email);
         if (user != null)
         {
-            await _hubContext.Clients.User(user.Id).SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Your c has been replied! ID: #{complaint.Id}");
+            await _hubContext.Clients.User(user.Id).SendAsync("ReceiveComplaintToast", "ComplaintApprove", $"Your complaint has been resolved! ID: #{complaint.Id} \n You can rate your satisfaction ");
         }
-            //to PatientServices
-            await _hubContext.Clients.Group("PatientServicesGroup")
-                .SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Complaint ID: #{complaint.Id} replied by {complaint.AssignedStaffId}");
-
 
         return RedirectToAction("Details", new { id = id });
     }

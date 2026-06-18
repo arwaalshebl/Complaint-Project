@@ -104,6 +104,7 @@
                             </td>
                             <td class="text-center align-middle">
                                 <div class="d-flex justify-content-center align-items-center">
+
                                     @if (item.IsSatisfied == "Not Satisfied" )
                                     {
                                         <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill fw-bold small">
@@ -126,6 +127,12 @@
                                     {
                                         <span class="badge bg-info-subtle text-info border border-info px-3 py-2 rounded-pill fw-bold small">
                                             <i class="bi bi-chat-left-text-fill me-1"></i> In Progress (Replied)
+                                        </span>
+                                    }
+                                    else if (item.Status == "In Progress,Approve")
+                                    {
+                                        <span class="badge bg-info-subtle text-info border border-info px-3 py-2 rounded-pill fw-bold small">
+                                            <i class="bi bi-chat-left-text-fill me-1"></i> In Progress (Approve)
                                         </span>
                                     }
                                     else if (item.Status == "Closed")

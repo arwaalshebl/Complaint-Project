@@ -25,7 +25,7 @@ connection.on("ReceiveComplaintToast", function (actionType, messageText) {
         headerElement.className = "toast-header bg-warning text-white rounded-top-4 border-0 py-2";
         iconElement.className = "bi bi-star-fill me-2";
         titleElement.innerText = "New Complaint";
-        bodyTitleElement.innerText = "New Request!";
+        bodyTitleElement.innerText = "New Complaint!";
         bodyTitleElement.className = "fw-bold text-primary";
     }
     else if (actionType === "ComplaintReopened") {
@@ -46,6 +46,13 @@ connection.on("ReceiveComplaintToast", function (actionType, messageText) {
         headerElement.className = "toast-header bg-info text-white rounded-top-4 border-0 py-2";
         iconElement.className = "bi bi-check-triangle-fill me-2";
         titleElement.innerText = "Complaint Replied";
+        // bodyTitleElement.innerText = "Urgent Action Required!";
+        bodyTitleElement.className = "fw-bold text-info";
+    }
+    else if (actionType === "ComplaintApprove") {
+        headerElement.className = "toast-header bg-info text-white rounded-top-4 border-0 py-2";
+        iconElement.className = "bi bi-check-triangle-fill me-2";
+        titleElement.innerText = "Complaint Approve";
         // bodyTitleElement.innerText = "Urgent Action Required!";
         bodyTitleElement.className = "fw-bold text-info";
     }
