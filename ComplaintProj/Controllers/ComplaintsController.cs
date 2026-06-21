@@ -105,14 +105,18 @@ public class ComplaintsController : Controller
 
 
         if (complaint == null) return NotFound();
+
+        //only show the healthcare users in list
+        var usersInRole = await _userManager.GetUsersInRoleAsync("HealthcareProvider");
+
         //get it from AspNetUsers
-        var staffList = await _userManager.Users
+        var staffList = usersInRole
             .Select(u => new SelectListItem
             {
                 Value = u.Id,
                 Text = u.UserName
             })
-            .ToListAsync();
+            .ToList();
         string? staffName = "No staff assigned yet";
         if (!string.IsNullOrEmpty(complaint.AssignedStaffId))
         {
@@ -330,22 +334,36 @@ public class ComplaintsController : Controller
             var complaint = await _context.Complaints.FindAsync(id);
         if (complaint == null) return NotFound();
 
-        //Id to the selcted staff
-        complaint.AssignedStaffId = assignedStaffId; 
-        complaint.Status = "In Progress,Assigned";
+      
 
+        //compare between new staff and current staff
+        if (!string.IsNullOrEmpty(complaint.AssignedStaffId) && complaint.AssignedStaffId != assignedStaffId)
+        {
+            complaint.Status = "In Progress,ReAssigned"; //re assign
+        }
+        else
+        {
+            complaint.Status = "In Progress,Assigned"; // first assign or assign to same person
+        }
+        //Id to the selcted staff
+        complaint.AssignedStaffId = assignedStaffId;
+        //complaint.Status = "In Progress,Assigned"; // this befor reassign case
 
         _context.Complaints.Update(complaint);
         await _context.SaveChangesAsync();
+        ////to all provider
+        //await _hubContext.Clients.Group("HealthcareProviderGroup")
+        //        .SendAsync("ReceiveComplaintToast", "ComplaintAssigned", $"New Complaint Assigned to you! ID: #{complaint.Id}");
 
-        await _hubContext.Clients.Group("HealthcareProviderGroup")
-                .SendAsync("ReceiveComplaintToast", "ComplaintAssigned", $"New Complaint Assigned to you! ID: #{complaint.Id}");
+        await _hubContext.Clients.User(assignedStaffId).SendAsync("ReceiveComplaintToast", "ComplaintAssigned", $"New Complaint Assigned to you! ID: #{complaint.Id}");
 
         // return RedirectToAction("Index");
         return RedirectToAction("Details", new { id = id });
 
 
     }
+
+
 
     [HttpPost]
     [Authorize(Roles = "Admin,HealthcareProvider")]

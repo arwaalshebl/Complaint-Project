@@ -123,6 +123,12 @@
                                             <i class="bi bi-person-gear me-1"></i> In Progress (Assigned)
                                         </span>
                                     }
+                                    else if (item.Status == "In Progress,ReAssigned")
+                                    {
+                                        <span class="badge bg-warning-subtle text-primary border border-primary px-3 py-2 rounded-pill fw-bold small">
+                                            <i class="bi bi-person-gear me-1"></i> In Progress (ReAssigned)
+                                        </span>
+                                    }
                                     else if (item.Status == "In Progress,Replied")
                                     {
                                         <span class="badge bg-info-subtle text-info border border-info px-3 py-2 rounded-pill fw-bold small">
@@ -141,13 +147,13 @@
                                             <i class="bi bi-check-circle-fill"></i> Closed
                                         </span>
                                     }
-                                    else
+@*                                     else
                                     {
                                         
                                         <span class="badge bg-secondary-subtle text-secondary border border-secondary px-3 py-2 rounded-pill fw-bold small">
                                             @item.Status
                                         </span>
-                                    }
+                                    } *@
                                 </div>
                             </td>
 
@@ -165,7 +171,7 @@
                             <td class="text-center align-middle">
                                 @if (User.IsInRole("HealthcareProvider"))
                                 {
-                                    @if (item.Status == "In Progress,Assigned" )
+                                    @if (item.Status == "In Progress,Assigned" || item.Status == "In Progress,ReAssigned")
                                     {
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold">
                                             <i class="bi bi-chat-left-dots-fill me-1"></i> Reply Now
