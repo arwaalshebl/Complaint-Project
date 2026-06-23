@@ -16,9 +16,7 @@
                     <li class="breadcrumb-item active">@SharedLocalizer["FormTitle"]</li>
                 </ol>
             </nav>
-          @*   <h2 class="text-center text-primary mb-5">
-                Patient Complaint Submission Form
-            </h2> *@
+
             <form asp-action="Create" method="post" enctype="multipart/form-data">
 
                 <!-- Patient Information -->
@@ -28,7 +26,6 @@
                         <!--lang-->
                         <label asp-for="PatientName" class="form-label">@SharedLocalizer["PatientName"]</label>
 
-                        @* <label asp-for="PatientName" class="form-label fw-bold"></label> *@
                         <input asp-for="PatientName" class="form-control" placeholder="Enter full name">
                         <span asp-validation-for="PatientName" class="text-danger small"></span>
                     </div>

@@ -5,9 +5,7 @@
 connection.on("ReceiveComplaintToast", function (actionType, messageText) {
     console.log("Real-time action caught: " + actionType);
 
-    // const toastElement = document.getElementById('ReceiveComplaintToast');
-    // const messageElement = document.getElementById('toastMessage');
-    // const timeElement = document.getElementById('toastTime');
+
 
     const toastElement = document.getElementById('ReceiveComplaintToast');
     const headerElement = toastElement.querySelector('.toast-header');

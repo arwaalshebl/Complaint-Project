@@ -75,13 +75,15 @@ public class ComplaintsController : Controller
             Status = complaint.Status,
             IsSatisfied = complaint.IsSatisfied,
             AssignedStaffId = complaint.AssignedStaffId
+            
+
         }).ToList();
 
         return View(viewModelList);
 
     }
 
-    //
+    
     ////BEFOR VIEWMODEL FOR CHECK BOX
     //public IActionResult Details(int? id)
     //{
@@ -96,7 +98,6 @@ public class ComplaintsController : Controller
     //}
 
     //AFTER VIEWMODEL FOR CHECK BOX
-
     public async Task<IActionResult> Details(int id)
     {
 
@@ -105,6 +106,18 @@ public class ComplaintsController : Controller
 
 
         if (complaint == null) return NotFound();
+
+        //check assignmenet
+        string? staffName = "No staff assigned yet";
+        if (!string.IsNullOrEmpty(complaint.AssignedStaffId))
+        {
+            var assignedUser = await _userManager.FindByIdAsync(complaint.AssignedStaffId);
+            if (assignedUser != null)
+            {
+                staffName = assignedUser.UserName;
+            }
+        }
+
 
         //only show the healthcare users in list
         var usersInRole = await _userManager.GetUsersInRoleAsync("HealthcareProvider");
@@ -117,15 +130,10 @@ public class ComplaintsController : Controller
                 Text = u.UserName
             })
             .ToList();
-        string? staffName = "No staff assigned yet";
-        if (!string.IsNullOrEmpty(complaint.AssignedStaffId))
-        {
-            var assignedUser = await _userManager.FindByIdAsync(complaint.AssignedStaffId);
-            if (assignedUser != null)
-            {
-                staffName = assignedUser.UserName; 
-            }
-        }
+
+
+
+
         var viewModel = new ComplaintViewModel
         {
             Id = complaint.Id,
@@ -139,13 +147,14 @@ public class ComplaintsController : Controller
             ComplaintLocation = complaint.ComplaintLocation,
             ComplaintSummary = complaint.ComplaintSummary,
             Status = complaint.Status,
-            // Convert it to string
+            // Convert checkbox list to string
             ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
                                     ? complaint.ComplaintCategory.Split(',').ToList()
                                     : new List<string>(),
 
             AttachmentPath = complaint.AttachmentPath,
             AssignedStaffName = staffName,
+            AssignedStaffId = complaint.AssignedStaffId,
             HealthcareStaffList = staffList,
             StaffReply = complaint.StaffReply,
             AllRepliesList = !string.IsNullOrEmpty(complaint.StaffReply)
@@ -282,48 +291,49 @@ public class ComplaintsController : Controller
         return Redirect(returnUrl);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Assign(int id)
-    {
-        var complaint = await _context.Complaints.FindAsync(id);
-        if (complaint == null) return NotFound();
+    //// no need to assign get
+    //[HttpGet]
+    //public async Task<IActionResult> Assign(int id)
+    //{
+    //    var complaint = await _context.Complaints.FindAsync(id);
+    //    if (complaint == null) return NotFound();
 
-        //get it from AspNetUsers
-        var staffList = await _userManager.Users
-            .Select(u => new SelectListItem
-            {
-                Value = u.Id,       
-                Text = u.UserName  
-            })
-            .ToListAsync();
+    //    //get it from AspNetUsers
+    //    var staffList = await _userManager.Users
+    //        .Select(u => new SelectListItem
+    //        {
+    //            Value = u.Id,       
+    //            Text = u.UserName  
+    //        })
+    //        .ToListAsync();
 
-        var viewModel = new ComplaintViewModel
-        {
-            Id=complaint.Id,
-            PatientName = complaint.PatientName,
-            PhoneNumber = complaint.PhoneNumber,
-            DateOfBirth = complaint.DateOfBirth,
-            Job = complaint.Job,
-            Nationality = complaint.Nationality,
-            Email = complaint.Email,
-            ComplaintType = complaint.ComplaintType,
-            ComplaintLocation = complaint.ComplaintLocation,
-            ComplaintSummary = complaint.ComplaintSummary,
-            Status = complaint.Status,
-            // Convert it to string
-            ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
-                                    ? complaint.ComplaintCategory.Split(',').ToList()
-                                    : new List<string>(),
+    //    var viewModel = new ComplaintViewModel
+    //    {
+    //        Id=complaint.Id,
+    //        PatientName = complaint.PatientName,
+    //        PhoneNumber = complaint.PhoneNumber,
+    //        DateOfBirth = complaint.DateOfBirth,
+    //        Job = complaint.Job,
+    //        Nationality = complaint.Nationality,
+    //        Email = complaint.Email,
+    //        ComplaintType = complaint.ComplaintType,
+    //        ComplaintLocation = complaint.ComplaintLocation,
+    //        ComplaintSummary = complaint.ComplaintSummary,
+    //        Status = complaint.Status,
+    //        // Convert it to string
+    //        ComplaintCategory = !string.IsNullOrEmpty(complaint.ComplaintCategory)
+    //                                ? complaint.ComplaintCategory.Split(',').ToList()
+    //                                : new List<string>(),
 
-            //attach
-            AttachmentPath = complaint.AttachmentPath,
-            //assign
-            AssignedStaffId = complaint.AssignedStaffId,
-            HealthcareStaffList = staffList 
-        };
+    //        //attach
+    //        AttachmentPath = complaint.AttachmentPath,
+    //        //assign
+    //        AssignedStaffId = complaint.AssignedStaffId,
+    //        HealthcareStaffList = staffList 
+    //    };
 
-        return View(viewModel);
-    }
+    //    return View(viewModel);
+    //}
 
 
     [HttpPost]
@@ -408,6 +418,7 @@ public class ComplaintsController : Controller
         //{
         //    await _hubContext.Clients.User(user.Id).SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Your c has been replied! ID: #{complaint.Id}");
         //}
+
         //to PatientServices
         await _hubContext.Clients.Group("PatientServicesGroup")
                 .SendAsync("ReceiveComplaintToast", "ComplaintReplied", $"Complaint ID: #{complaint.Id} replied by {complaint.AssignedStaffId}");

@@ -42,7 +42,7 @@ namespace ComplaintProj.ViewModel
         [Display(Name = "Complaint Type")]
         public string? ComplaintType { get; set; }
 
-        // here is the diff to can use checkbox
+        // here is the diff to can use checkbox is a list only in VM
         [Required(ErrorMessage = "Please select at least one category")]
         [Display(Name = "Complaint Category")]
         public List<string> ComplaintCategory { get; set; } = new List<string>();
