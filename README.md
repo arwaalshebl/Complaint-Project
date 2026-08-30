@@ -1,61 +1,149 @@
 # Complaint Project
 
-This repository contains the Complaint-Project — a web application for submitting, tracking, and managing user complaints and requests.
+A comprehensive ASP.NET Core web application for submitting, tracking, and managing user complaints. Built with role-based access control, real-time notifications via SignalR, and multi-language support (English & Arabic).
 
-## Key Features
+## 🎯 Key Features
 
-- Authentication & Authorization
-  - Secure user authentication with password hashing and session management.
-  - Role-based access control (User, Staff, Admin) to protect admin features and internal notes.
-- Complaint Lifecycle
-  - Create, read, update, delete (CRUD) operations for complaints.
-  - Statuses such as New, Open, In Progress, On Hold, Resolved, Closed.
-  - Assignment and re-assignment to staff members.
-- Comments & Activity
-  - Threaded comments or notes on each complaint; separate public (user-facing) and internal (staff-only) notes.
-  - Activity timeline and audit log for important events (status changes, assignments, attachments).
-- Attachments
-  - Upload and manage attachments with size/type validation and secure storage.
-- Notifications
-  - In-app notifications for important events (new assignment, status change, staff reply).
-- Search, Sorting & Filtering
-  - Full-text search, filters, and sorting for fast navigation of complaints.
-- Reporting & Export
-  - Built-in reports for management and CSV export for offline analysis.
-- Responsive UI & Accessibility
-  - Mobile-friendly layout and accessibility considerations for keyboard navigation and screen readers.
-- Validation & Error Handling
-  - Server-side and client-side form validation with friendly error messages.
-- Security & Privacy
-  - Input sanitization, CSRF protection, secure file handling, and least-privilege access for staff/admin functionality.
+### Authentication & Authorization
+- Secure user authentication using ASP.NET Core Identity
+- Password hashing and session management
+- **Role-based access control (RBAC):**
+  - **Admin**: Full system access, report generation
+  - **Patient**: Submit and track personal complaints
+  - **HealthcareProvider**: Assigned complaints, staff replies
+  - **PatientServices**: Staff role for complaint management and approval
 
-## Tech Stack (based on repository languages)
+### Complaint Management
+- **Full CRUD operations** on complaints
+- **Status workflow:** New → In Progress (Assigned/ReAssigned/Replied/Approve) → Closed
+- **Complaint types:** Medical & Non-Medical
+- **Multiple categories:** Waiting Time, Billing & Fees, Behavior & Attitude, Medication Errors, Communication, and more
+- **Assignment & Re-assignment** to healthcare providers
+- **Soft delete support** for data retention
 
-- Backend: C# (ASP.NET Core or similar)
-- Frontend: HTML, CSS, JavaScript
+### Rich Features
+- **File Attachments**: Upload and manage complaint attachments with validation
+- **Staff Replies**: Internal notes and staff responses with audit trail
+- **Feedback System**: Patient satisfaction tracking (Satisfied/Not Satisfied)
+- **Real-time Notifications**: SignalR-powered in-app notifications
+- **Multi-language Support**: Full localization for English (en-US) and Arabic (ar-SA)
+- **Audit Trail**: Automatic tracking of changes via EF Core interceptors
 
-## Getting Started (development)
+## 💾 Tech Stack
 
-1. Clone the repository:
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | C# with ASP.NET Core 10.0 |
+| **Database** | SQL Server with Entity Framework Core 10.0 |
+| **Authentication** | ASP.NET Core Identity |
+| **Real-time** | SignalR for live notifications |
+| **Frontend** | HTML5, CSS3, Bootstrap 5, JavaScript |
+| **Localization** | .NET Core localization framework |
+
+## 📁 Project Structure
+
+```
+ComplaintProj/
+├── Controllers/
+│   ├── AccountController.cs      # Login, Register, Logout
+│   ├── ComplaintsController.cs   # Main CRUD operations
+│   └── HomeController.cs         # Landing page
+├── Models/
+│   └── ComplaintModel.cs         # Complaint entity with validations
+├── Views/
+│   ├── Account/                  # Authentication views
+│   ├── Complaints/               # Complaint views
+│   └── Shared/                   # Layout & shared views
+├── Data/
+│   └── AppDbContext.cs           # EF Core context
+├── Hubs/
+│   └── ComplaintHub.cs           # SignalR hub for notifications
+├── Migrations/                   # EF Core migrations
+├── Interceptors/
+│   └── AuditInterceptor.cs       # Audit trail logging
+├── Program.cs                    # Startup configuration
+└── appsettings.json              # Configuration & connection strings
+```
+
+## 🔄 Complaint Workflow
+
+```
+1. Patient Submits Complaint
+        ↓
+2. Status: "New" (Admin/PatientServices review)
+        ↓
+3. Status: "In Progress, Assigned" (Assigned to HealthcareProvider)
+        ↓
+4. Provider Adds Reply → Status: "In Progress, Replied"
+        ↓
+5. Admin Reviews → Status: "In Progress, Approve"
+        ↓
+6. Status: "Closed" (Complaint resolved)
+        ↓
+7. Patient Provides Feedback (Satisfied/Not Satisfied)
+        ↓
+8. If Not Satisfied → Status: "Reopened, Unresolved" (Returns to step 3)
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **.NET 10 SDK** installed
+- **SQL Server LocalDB** or SQL Server instance
+- **Visual Studio 2022** or VS Code (recommended)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
    git clone https://github.com/arwaalshebl/Complaint-Project.git
-2. Open the solution in Visual Studio / VS Code.
-3. Restore NuGet packages and front-end dependencies.
-4. Configure appsettings (database connection string, SMTP settings) — see appsettings.example.json if available.
-5. Run database migrations to create the schema.
-6. Build and run the project.
+   cd ComplaintProj
+   ```
 
-Notes:
-- If you want, I can add a setup script, seed data, or an example appsettings file.
+2. **Restore dependencies:**
+   ```bash
+   dotnet restore
+   ```
 
-## Contributing
+3. **Configure database:**
+   - Edit `appsettings.json` and update the connection string if needed
+   - Default: `Server=(localdb)\mssqllocaldb;Database=ComplaintDB;...`
 
-- Fork the repo and open a pull request with a clear title and description.
-- Follow existing code style and include tests for new features when possible.
+4. **Apply migrations:**
+   ```bash
+   dotnet ef database update
+   ```
 
-## License
+5. **Run the application:**
+   ```bash
+   dotnet run
+   ```
 
-- Add your license file or indicate the project's license here.
+6. **Access the app:**
+   - Navigate to `https://localhost:7000`
+   - Default credentials:
+     - **Admin:** `admin@gmail.com` / `@Arwa123`
+     - **Healthcare Provider:** `provider@gmail.com` / `@Arwa123`
+     - **Patient Services:** `services@gmail.com` / `@Arwa123`
+   - Or register a new **Patient** account
+
+## 🌍 Localization
+
+The application supports two languages:
+- **English (en-US)** — Default
+- **Arabic (ar-SA)** — Full RTL support
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/YourFeatureName`
+3. Commit your changes: `git commit -m 'Add YourFeatureName'`
+4. Push to the branch: `git push origin feature/YourFeatureName`
+5. Open a Pull Request with a clear title and description
 
 ---
 
-If you'd like, I can customize this README further to match the actual code (I can scan the repo and adapt the README to exact controllers/views).
+**Last Updated:** August 30, 2026  
+**Repository:** [arwaalshebl/Complaint-Project](https://github.com/arwaalshebl/Complaint-Project)
